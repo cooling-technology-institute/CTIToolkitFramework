@@ -10,7 +10,7 @@ namespace Models
         public double HotWaterTemperature { set; get; }
         public double ColdWaterTemperature { set; get; }
         public double WetBulbTemperature { set; get; } 
-        public double WaterAirRatio { set; get; }
+        public double LiquidtoGasRatio { set; get; }
         public double Approach { set; get; }
         public double Range { set; get; }
         public double KaV_L { set; get; }
@@ -19,10 +19,9 @@ namespace Models
         {
             HotWaterTemperature = 0.0;
             ColdWaterTemperature = 0.0;
-            WaterAirRatio = 0.0;
+            LiquidtoGasRatio = 0.0;
             BarometricPressure = 0.0;
             WetBulbTemperature = 0.0;
-            WaterAirRatio = 0.0;
             Range = 0.0;
             KaV_L = 0.0;
         }

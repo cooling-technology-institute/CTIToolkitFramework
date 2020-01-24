@@ -29,7 +29,7 @@ namespace ViewModels
     //    m_strAlt= L_METERS;
     //}
 
-    public class WaterAirFlowRateDataValue : DataValue
+    public class LiquidtoGasRatioDataValue : DataValue
     {
         public const double WaterAirFlowRateDefault = 1.3; //DDV_MinMaxDouble(pDX,m_dblMerkelLG, min 0.1, max 10.0, metric min 0.1, max 10.0, decimal 2);
         public const double WaterAirFlowRateMinimum = 0.1;
@@ -48,7 +48,7 @@ namespace ViewModels
         public const double WaterAirFlowRateMaximum_InternationalSystemOfUnits_IS_Demo = 10.0;
         public const string WaterAirFlowRateToolTipFormat = "Water Flow Rate / Air Flow Rate (L/G).\nValue should be between {0} and {1}.\n";
 
-        public WaterAirFlowRateDataValue(bool isDemo, bool isInternationalSystemOfUnits_IS_)
+        public LiquidtoGasRatioDataValue(bool isDemo, bool isInternationalSystemOfUnits_IS_)
         {
             IsDemo = isDemo;
             InputMessage = "Water Flow Rate / Air Flow Rate (L/G)";

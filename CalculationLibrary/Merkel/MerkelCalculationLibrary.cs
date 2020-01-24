@@ -6,14 +6,14 @@ namespace CalculationLibrary
 {
     public class MerkelCalculationLibrary
     {
-        public string MerkelCalculation(MerkelData data)
+        public bool MerkelCalculation(MerkelData data, out string errorMessage)
         {
             data.Range = data.HotWaterTemperature - data.ColdWaterTemperature;
             data.Approach = data.ColdWaterTemperature - data.WetBulbTemperature;
 
             CalculationLibrary.CalculateMerkel(data);
 
-            return Merkel_CheckCalculationValues(data);
+            return Merkel_CheckCalculationValues(data, out errorMessage);
         }
 
         public void MerkelConvertValues(bool isInternationalSystemOfUnits_IS_, bool isElevation, MerkelData data)
@@ -41,9 +41,10 @@ namespace CalculationLibrary
             }
         }
 
-        public string Merkel_CheckCalculationValues(MerkelData data)
+        public bool Merkel_CheckCalculationValues(MerkelData data, out string errorMessage)
         {
-            return string.Empty;
+            errorMessage = string.Empty;
+            return true;
         }
     }
 }

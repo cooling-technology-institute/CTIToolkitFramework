@@ -15,8 +15,9 @@ namespace CTIToolkit
         const int ELEVATION = 0;
         const int PRESSURE = 1;
 
-        private MerkelInputData MerkelInputData { get; set; }
+        private MerkelViewModel MerkelViewModel { get; set; }
         private MerkelData MerkelData { get; set; }
+        private MerkelCalculationLibrary MerkelCalculationLibrary { get; set; }
         private bool IsDemo { get; set; }
         private bool IsInternationalSystemOfUnits_IS_ { get; set; }
 
@@ -26,7 +27,8 @@ namespace CTIToolkit
 
             IsInternationalSystemOfUnits_IS_ = (applicationSettings.UnitsSelection == UnitsSelection.International_System_Of_Units_SI);
 
-            MerkelInputData = new MerkelInputData(IsDemo, IsInternationalSystemOfUnits_IS_);
+            MerkelViewModel = new MerkelViewModel(IsDemo, IsInternationalSystemOfUnits_IS_);
+            MerkelCalculationLibrary = new MerkelCalculationLibrary();
 
             Setup();
 
@@ -36,23 +38,23 @@ namespace CTIToolkit
 
         private void Setup()
         {
-            TemperatureHotWaterLabel.Text = MerkelInputData.HotWaterTemperatureDataValue.InputMessage + ":";
+            TemperatureHotWaterLabel.Text = MerkelViewModel.MerkelInputData.HotWaterTemperatureDataValue.InputMessage + ":";
             TemperatureHotWaterLabel.TextAlign = ContentAlignment.MiddleRight;
-            Merkel_HWT_Value.Text = MerkelInputData.HotWaterTemperatureDataValue.InputValue;
-            toolTip1.SetToolTip(Merkel_HWT_Value, MerkelInputData.HotWaterTemperatureDataValue.ToolTip);
+            Merkel_HotWaterTemperature_Value.Text = MerkelViewModel.MerkelInputData.HotWaterTemperatureDataValue.InputValue;
+            toolTip1.SetToolTip(Merkel_HotWaterTemperature_Value, MerkelViewModel.MerkelInputData.HotWaterTemperatureDataValue.ToolTip);
 
-            TemperatureColdWaterLabel.Text = MerkelInputData.ColdWaterTemperatureDataValue.InputMessage + ":";
+            TemperatureColdWaterLabel.Text = MerkelViewModel.MerkelInputData.ColdWaterTemperatureDataValue.InputMessage + ":";
             TemperatureColdWaterLabel.TextAlign = ContentAlignment.MiddleRight;
-            Merkel_CWT_Value.Text = MerkelInputData.ColdWaterTemperatureDataValue.InputValue;
-            toolTip1.SetToolTip(Merkel_CWT_Value, MerkelInputData.ColdWaterTemperatureDataValue.ToolTip);
+            Merkel_ColdWaterTemperature_Value.Text = MerkelViewModel.MerkelInputData.ColdWaterTemperatureDataValue.InputValue;
+            toolTip1.SetToolTip(Merkel_ColdWaterTemperature_Value, MerkelViewModel.MerkelInputData.ColdWaterTemperatureDataValue.ToolTip);
 
-            MerkelWetBulbTemperatureLabel.Text = MerkelInputData.WetBulbTemperatureDataValue.InputMessage + ":";
+            MerkelWetBulbTemperatureLabel.Text = MerkelViewModel.MerkelInputData.WetBulbTemperatureDataValue.InputMessage + ":";
             MerkelWetBulbTemperatureLabel.TextAlign = ContentAlignment.MiddleRight;
-            Merkel_Wet_Bulb_Value.Text = MerkelInputData.WetBulbTemperatureDataValue.InputValue;
-            toolTip1.SetToolTip(Merkel_Wet_Bulb_Value, MerkelInputData.WetBulbTemperatureDataValue.ToolTip);
+            Merkel_WetBulbTemperature_Value.Text = MerkelViewModel.MerkelInputData.WetBulbTemperatureDataValue.InputValue;
+            toolTip1.SetToolTip(Merkel_WetBulbTemperature_Value, MerkelViewModel.MerkelInputData.WetBulbTemperatureDataValue.ToolTip);
 
-            Merkel_LG_Value.Text = MerkelInputData.WaterAirFlowRateDataValue.InputValue;
-            toolTip1.SetToolTip(Merkel_LG_Value, MerkelInputData.WaterAirFlowRateDataValue.ToolTip);
+            Merkel_LiquidtoGasRatio_Value.Text = MerkelViewModel.MerkelInputData.LiquidtoGasRatioDataValue.InputValue;
+            toolTip1.SetToolTip(Merkel_LiquidtoGasRatio_Value, MerkelViewModel.MerkelInputData.LiquidtoGasRatioDataValue.ToolTip);
 
             Merkle_Elevation_Pressure_Selector.SelectedIndex = ELEVATION;
         }
@@ -65,7 +67,7 @@ namespace CTIToolkit
 
         private void SwitchUnitedStatesCustomaryUnits_IP_InternationalSystemOfUnits_IS_()
         {
-            if (MerkelInputData.ConvertValues(IsInternationalSystemOfUnits_IS_, (Merkle_Elevation_Pressure_Selector.SelectedIndex == ELEVATION)))
+            if (MerkelViewModel.ConvertValues(IsInternationalSystemOfUnits_IS_, (Merkle_Elevation_Pressure_Selector.SelectedIndex == ELEVATION)))
             {
                 SwitchCalculation();
             }
@@ -98,7 +100,7 @@ namespace CTIToolkit
         {
             //string message;
 
-            if (MerkelInputData.ConvertValues(IsInternationalSystemOfUnits_IS_, (Merkle_Elevation_Pressure_Selector.SelectedIndex == ELEVATION)))
+            if (MerkelViewModel.ConvertValues(IsInternationalSystemOfUnits_IS_, (Merkle_Elevation_Pressure_Selector.SelectedIndex == ELEVATION)))
             {
                 SwitchCalculation();
             }
@@ -172,7 +174,7 @@ namespace CTIToolkit
 
             if (Merkle_Elevation_Pressure_Selector.SelectedIndex == ELEVATION)
             {
-                Merkel_Elevation_Value.Text = MerkelInputData.ElevationDataValue.InputValue;
+                Merkel_Elevation_Value.Text = MerkelViewModel.ElevationDataValue.InputValue;
                 if (IsInternationalSystemOfUnits_IS_)
                 {
                     MerkelElevationPressureUnits.Text = ConstantUnits.Meter;
@@ -184,7 +186,7 @@ namespace CTIToolkit
             }
             else
             {
-                Merkel_Elevation_Value.Text = MerkelInputData.BarometricPressureDataValue.InputValue;
+                Merkel_Elevation_Value.Text = MerkelViewModel.BarometricPressureDataValue.InputValue;
                 if (IsInternationalSystemOfUnits_IS_)
                 {
                     MerkelElevationPressureUnits.Text = ConstantUnits.BarometricPressureKiloPascal;
@@ -199,13 +201,13 @@ namespace CTIToolkit
             {
                 MerkelTemperatureHotWaterUnits.Text = ConstantUnits.TemperatureCelsius;
                 MerkelTemperatureColdWaterUnits.Text = ConstantUnits.TemperatureCelsius;
-                MerkelTemperatureWebBulbUnits.Text = ConstantUnits.TemperatureCelsius;
+                MerkelWebBulbTemperatureUnits.Text = ConstantUnits.TemperatureCelsius;
             }
             else
             {
                 MerkelTemperatureHotWaterUnits.Text = ConstantUnits.TemperatureFahrenheit;
                 MerkelTemperatureColdWaterUnits.Text = ConstantUnits.TemperatureFahrenheit;
-                MerkelTemperatureWebBulbUnits.Text = ConstantUnits.TemperatureFahrenheit;
+                MerkelWebBulbTemperatureUnits.Text = ConstantUnits.TemperatureFahrenheit;
             }
         }
 
@@ -213,7 +215,13 @@ namespace CTIToolkit
         {
             try
             {
-                MerkelData = new MerkelData();
+                string errorMessage = string.Empty;
+
+                if(MerkelViewModel.CalculateMerkel((Merkle_Elevation_Pressure_Selector.SelectedIndex == ELEVATION), errorMessage))
+                {
+
+                }
+
 
                 // clear data set
                 if (MerkelGridView.DataSource != null)
@@ -225,48 +233,28 @@ namespace CTIToolkit
 
                 string message = string.Empty;
 
+                if(!MerkelViewModel.MerkelInputData.FillData(MerkelData, (Merkle_Elevation_Pressure_Selector.SelectedIndex == ELEVATION), IsInternationalSystemOfUnits_IS_, out message))
+                {
+                    MessageBox.Show(message);
+                    return;
+                }
+
                 if (Merkle_Elevation_Pressure_Selector.SelectedIndex == ELEVATION)
                 {
-                    if (!MerkelInputData.ElevationDataValue.UpdateValue(Merkel_Elevation_Value.Text, out message))
+                    if (!MerkelViewModel.MerkelInputData.ElevationDataValue.UpdateValue(Merkel_Elevation_Value.Text, out message))
                     {
-                        MessageBox.Show(message);
-                        return;
                     }
                 }
                 else
                 {
-                    if (!MerkelInputData.BarometricPressureDataValue.UpdateValue(Merkel_Elevation_Value.Text, out message))
+                    if (!MerkelViewModel.MerkelInputData.BarometricPressureDataValue.UpdateValue(Merkel_Elevation_Value.Text, out message))
                     {
                         MessageBox.Show(message);
                         return;
                     }
                 }
 
-                if (!MerkelInputData.ColdWaterTemperatureDataValue.UpdateValue(Merkel_CWT_Value.Text, out message))
-                {
-                    MessageBox.Show(message);
-                    return;
-                }
-
-                if (!MerkelInputData.HotWaterTemperatureDataValue.UpdateValue(Merkel_HWT_Value.Text, out message))
-                {
-                    MessageBox.Show(message);
-                    return;
-                }
-
-                if (!MerkelInputData.WetBulbTemperatureDataValue.UpdateValue(Merkel_Wet_Bulb_Value.Text, out message))
-                {
-                    MessageBox.Show(message);
-                    return;
-                }
-
-                if (!MerkelInputData.WaterAirFlowRateDataValue.UpdateValue(Merkel_LG_Value.Text, out message))
-                {
-                    MessageBox.Show(message);
-                    return;
-                }
-
-                if (MerkelInputData.HotWaterTemperatureDataValue.Current < MerkelInputData.ColdWaterTemperatureDataValue.Current)
+                if (MerkelViewModel.MerkelInputData.HotWaterTemperatureDataValue.Current < MerkelViewModel.MerkelInputData.ColdWaterTemperatureDataValue.Current)
                 {
                     MessageBox.Show("The Hot Water Temperature value must be greater than the Cold Water Temperature value");
                     return;
@@ -274,29 +262,24 @@ namespace CTIToolkit
 
                 if (Merkle_Elevation_Pressure_Selector.SelectedIndex == ELEVATION)
                 {
-                    MerkelData.Elevation = MerkelInputData.ElevationDataValue.Current;
+                    MerkelData.Elevation = MerkelViewModel.MerkelInputData.ElevationDataValue.Current;
                 }
                 else
                 {
-                    MerkelData.BarometricPressure = MerkelInputData.BarometricPressureDataValue.Current;
+                    MerkelData.BarometricPressure = MerkelViewModel.MerkelInputData.BarometricPressureDataValue.Current;
                 }
 
                 //MerkelData.IsElevation = (Merkle_Elevation_Pressure_Selector.SelectedIndex == ELEVATION);
 
-                MerkelData.HotWaterTemperature = MerkelInputData.HotWaterTemperatureDataValue.Current;
-                MerkelData.ColdWaterTemperature = MerkelInputData.ColdWaterTemperatureDataValue.Current;
-                MerkelData.WetBulbTemperature = MerkelInputData.WetBulbTemperatureDataValue.Current;
-                MerkelData.WaterAirRatio = MerkelInputData.WaterAirFlowRateDataValue.Current;
+                MerkelData.HotWaterTemperature = MerkelViewModel.MerkelInputData.HotWaterTemperatureDataValue.Current;
+                MerkelData.ColdWaterTemperature = MerkelViewModel.MerkelInputData.ColdWaterTemperatureDataValue.Current;
+                MerkelData.WetBulbTemperature = MerkelViewModel.MerkelInputData.WetBulbTemperatureDataValue.Current;
+                MerkelData.LiquidtoGasRatio = MerkelViewModel.MerkelInputData.LiquidtoGasRatioDataValue.Current;
 
-                table = new MerkelCalculationLibrary().MerkelCalculation(MerkelData);
-
-                if (table != null)
+                if (MerkelViewModel.MerkelOutputData.NameValueUnitsDataTable.DataTable != null)
                 {
-                    // Create a DataView using the DataTable.
-                    DataView view = new DataView(table);
-
                     // Set a DataGrid control's DataSource to the DataView.
-                    MerkelGridView.DataSource = view;
+                    MerkelGridView.DataSource = new DataView(MerkelViewModel.MerkelOutputData.NameValueUnitsDataTable.DataTable);
                 }
             }
             catch (Exception exception)
@@ -314,6 +297,69 @@ namespace CTIToolkit
         {
             SwitchElevationPressure();
             CalculateMerkel();
+        }
+
+        private void Merkel_ColdWaterTemperature_Value_TextChanged(object sender, EventArgs e)
+        {
+            string errorMessage = string.Empty;
+
+            if(!MerkelViewModel.MerkelInputData.ColdWaterTemperatureDataValue.UpdateValue(Merkel_ColdWaterTemperature_Value.Text, out errorMessage))
+            {
+                MessageBox.Show(errorMessage);
+
+            }
+        }
+
+        private void Merkel_HotWaterTemperature_Value_TextChanged(object sender, EventArgs e)
+        {
+            string errorMessage = string.Empty;
+
+            if (!MerkelViewModel.MerkelInputData.HotWaterTemperatureDataValue.UpdateValue(Merkel_HotWaterTemperature_Value.Text, out errorMessage))
+            {
+                MessageBox.Show(errorMessage);
+            }
+        }
+
+        private void Merkel_WetBulbTemperature_Value_TextChanged(object sender, EventArgs e)
+        {
+            string errorMessage = string.Empty;
+
+            if (!MerkelViewModel.MerkelInputData.WetBulbTemperatureDataValue.UpdateValue(Merkel_WetBulbTemperature_Value.Text, out errorMessage))
+            {
+                MessageBox.Show(errorMessage);
+            }
+
+        }
+
+        private void Merkel_Elevation_Value_TextChanged(object sender, EventArgs e)
+        {
+            string errorMessage = string.Empty;
+
+            if (Merkle_Elevation_Pressure_Selector.SelectedIndex == ELEVATION)
+            {
+                if (!MerkelViewModel.MerkelInputData.ElevationDataValue.UpdateValue(Merkel_Elevation_Value.Text, out errorMessage))
+                {
+                    MessageBox.Show(errorMessage);
+                }
+            }
+            else
+            {
+                if (!MerkelViewModel.MerkelInputData.BarometricPressureDataValue.UpdateValue(Merkel_Elevation_Value.Text, out errorMessage))
+                {
+                    MessageBox.Show(errorMessage);
+                }
+            }
+        }
+
+        private void Merkel_LiquidtoGasRatio_Value_TextChanged(object sender, EventArgs e)
+        {
+            string errorMessage = string.Empty;
+
+            if (!MerkelViewModel.MerkelInputData.LiquidtoGasRatioDataValue.UpdateValue(Merkel_LiquidtoGasRatio_Value.Text, out errorMessage))
+            {
+                MessageBox.Show(errorMessage);
+            }
+
         }
     }
 }

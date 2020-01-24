@@ -32,17 +32,17 @@
             this.MerkelGridView = new System.Windows.Forms.DataGridView();
             this.InputPropertiesGroupBox = new System.Windows.Forms.GroupBox();
             this.Merkle_Elevation_Pressure_Selector = new System.Windows.Forms.ComboBox();
-            this.MerkelTemperatureWebBulbUnits = new System.Windows.Forms.Label();
+            this.MerkelWebBulbTemperatureUnits = new System.Windows.Forms.Label();
             this.MerkelElevationPressureUnits = new System.Windows.Forms.Label();
             this.Merkel_Elevation_Value = new System.Windows.Forms.TextBox();
-            this.LGLabel = new System.Windows.Forms.Label();
-            this.Merkel_LG_Value = new System.Windows.Forms.TextBox();
+            this.LiquidtoGasRatioLabel = new System.Windows.Forms.Label();
+            this.Merkel_LiquidtoGasRatio_Value = new System.Windows.Forms.TextBox();
             this.MerkelWetBulbTemperatureLabel = new System.Windows.Forms.Label();
             this.MerkelTemperatureColdWaterUnits = new System.Windows.Forms.Label();
             this.MerkelTemperatureHotWaterUnits = new System.Windows.Forms.Label();
-            this.Merkel_Wet_Bulb_Value = new System.Windows.Forms.TextBox();
-            this.Merkel_CWT_Value = new System.Windows.Forms.TextBox();
-            this.Merkel_HWT_Value = new System.Windows.Forms.TextBox();
+            this.Merkel_WetBulbTemperature_Value = new System.Windows.Forms.TextBox();
+            this.Merkel_ColdWaterTemperature_Value = new System.Windows.Forms.TextBox();
+            this.Merkel_HotWaterTemperature_Value = new System.Windows.Forms.TextBox();
             this.TemperatureColdWaterLabel = new System.Windows.Forms.Label();
             this.TemperatureHotWaterLabel = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
@@ -66,17 +66,17 @@
             // InputPropertiesGroupBox
             // 
             this.InputPropertiesGroupBox.Controls.Add(this.Merkle_Elevation_Pressure_Selector);
-            this.InputPropertiesGroupBox.Controls.Add(this.MerkelTemperatureWebBulbUnits);
+            this.InputPropertiesGroupBox.Controls.Add(this.MerkelWebBulbTemperatureUnits);
             this.InputPropertiesGroupBox.Controls.Add(this.MerkelElevationPressureUnits);
             this.InputPropertiesGroupBox.Controls.Add(this.Merkel_Elevation_Value);
-            this.InputPropertiesGroupBox.Controls.Add(this.LGLabel);
-            this.InputPropertiesGroupBox.Controls.Add(this.Merkel_LG_Value);
+            this.InputPropertiesGroupBox.Controls.Add(this.LiquidtoGasRatioLabel);
+            this.InputPropertiesGroupBox.Controls.Add(this.Merkel_LiquidtoGasRatio_Value);
             this.InputPropertiesGroupBox.Controls.Add(this.MerkelWetBulbTemperatureLabel);
             this.InputPropertiesGroupBox.Controls.Add(this.MerkelTemperatureColdWaterUnits);
             this.InputPropertiesGroupBox.Controls.Add(this.MerkelTemperatureHotWaterUnits);
-            this.InputPropertiesGroupBox.Controls.Add(this.Merkel_Wet_Bulb_Value);
-            this.InputPropertiesGroupBox.Controls.Add(this.Merkel_CWT_Value);
-            this.InputPropertiesGroupBox.Controls.Add(this.Merkel_HWT_Value);
+            this.InputPropertiesGroupBox.Controls.Add(this.Merkel_WetBulbTemperature_Value);
+            this.InputPropertiesGroupBox.Controls.Add(this.Merkel_ColdWaterTemperature_Value);
+            this.InputPropertiesGroupBox.Controls.Add(this.Merkel_HotWaterTemperature_Value);
             this.InputPropertiesGroupBox.Controls.Add(this.TemperatureColdWaterLabel);
             this.InputPropertiesGroupBox.Controls.Add(this.TemperatureHotWaterLabel);
             this.InputPropertiesGroupBox.Location = new System.Drawing.Point(9, 10);
@@ -100,14 +100,14 @@
             this.Merkle_Elevation_Pressure_Selector.TabIndex = 21;
             this.Merkle_Elevation_Pressure_Selector.SelectedIndexChanged += new System.EventHandler(this.Merkle_Elevation_Pressure_Selector_SelectedIndexChanged);
             // 
-            // MerkelTemperatureWebBulbUnits
+            // MerkelWebBulbTemperatureUnits
             // 
-            this.MerkelTemperatureWebBulbUnits.AutoSize = true;
-            this.MerkelTemperatureWebBulbUnits.Location = new System.Drawing.Point(259, 91);
-            this.MerkelTemperatureWebBulbUnits.Name = "MerkelTemperatureWebBulbUnits";
-            this.MerkelTemperatureWebBulbUnits.Size = new System.Drawing.Size(17, 13);
-            this.MerkelTemperatureWebBulbUnits.TabIndex = 18;
-            this.MerkelTemperatureWebBulbUnits.Text = "°F";
+            this.MerkelWebBulbTemperatureUnits.AutoSize = true;
+            this.MerkelWebBulbTemperatureUnits.Location = new System.Drawing.Point(259, 91);
+            this.MerkelWebBulbTemperatureUnits.Name = "MerkelTemperatureWebBulbUnits";
+            this.MerkelWebBulbTemperatureUnits.Size = new System.Drawing.Size(17, 13);
+            this.MerkelWebBulbTemperatureUnits.TabIndex = 18;
+            this.MerkelWebBulbTemperatureUnits.Text = "°F";
             // 
             // MerkelElevationPressureUnits
             // 
@@ -125,23 +125,25 @@
             this.Merkel_Elevation_Value.Size = new System.Drawing.Size(100, 20);
             this.Merkel_Elevation_Value.TabIndex = 15;
             this.Merkel_Elevation_Value.Text = "0";
+            this.Merkel_Elevation_Value.TextChanged += new System.EventHandler(this.Merkel_Elevation_Value_TextChanged);
             // 
-            // LGLabel
+            // LiquidtoGasRatioLabel
             // 
-            this.LGLabel.Location = new System.Drawing.Point(12, 145);
-            this.LGLabel.Name = "LGLabel";
-            this.LGLabel.Size = new System.Drawing.Size(132, 13);
-            this.LGLabel.TabIndex = 14;
-            this.LGLabel.Text = "L/G:";
-            this.LGLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.LiquidtoGasRatioLabel.Location = new System.Drawing.Point(12, 145);
+            this.LiquidtoGasRatioLabel.Name = "LGLabel";
+            this.LiquidtoGasRatioLabel.Size = new System.Drawing.Size(132, 13);
+            this.LiquidtoGasRatioLabel.TabIndex = 14;
+            this.LiquidtoGasRatioLabel.Text = "L/G:";
+            this.LiquidtoGasRatioLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // Merkel_LG_Value
+            // Merkel_LiquidtoGasRatio_Value
             // 
-            this.Merkel_LG_Value.Location = new System.Drawing.Point(152, 142);
-            this.Merkel_LG_Value.Name = "Merkel_LG_Value";
-            this.Merkel_LG_Value.Size = new System.Drawing.Size(100, 20);
-            this.Merkel_LG_Value.TabIndex = 12;
-            this.Merkel_LG_Value.Text = "0";
+            this.Merkel_LiquidtoGasRatio_Value.Location = new System.Drawing.Point(152, 142);
+            this.Merkel_LiquidtoGasRatio_Value.Name = "Merkel_LG_Value";
+            this.Merkel_LiquidtoGasRatio_Value.Size = new System.Drawing.Size(100, 20);
+            this.Merkel_LiquidtoGasRatio_Value.TabIndex = 12;
+            this.Merkel_LiquidtoGasRatio_Value.Text = "0";
+            this.Merkel_LiquidtoGasRatio_Value.TextChanged += new System.EventHandler(this.Merkel_LiquidtoGasRatio_Value_TextChanged);
             // 
             // MerkelWetBulbTemperatureLabel
             // 
@@ -170,29 +172,32 @@
             this.MerkelTemperatureHotWaterUnits.TabIndex = 6;
             this.MerkelTemperatureHotWaterUnits.Text = "°F";
             // 
-            // Merkel_Wet_Bulb_Value
+            // Merkel_WebBulbTemperature_Value
             // 
-            this.Merkel_Wet_Bulb_Value.Location = new System.Drawing.Point(152, 88);
-            this.Merkel_Wet_Bulb_Value.Name = "Merkel_Wet_Bulb_Value";
-            this.Merkel_Wet_Bulb_Value.Size = new System.Drawing.Size(100, 20);
-            this.Merkel_Wet_Bulb_Value.TabIndex = 5;
-            this.Merkel_Wet_Bulb_Value.Text = "0";
+            this.Merkel_WetBulbTemperature_Value.Location = new System.Drawing.Point(152, 88);
+            this.Merkel_WetBulbTemperature_Value.Name = "Merkel_Wet_Bulb_Value";
+            this.Merkel_WetBulbTemperature_Value.Size = new System.Drawing.Size(100, 20);
+            this.Merkel_WetBulbTemperature_Value.TabIndex = 5;
+            this.Merkel_WetBulbTemperature_Value.Text = "0";
+            this.Merkel_WetBulbTemperature_Value.TextChanged += new System.EventHandler(this.Merkel_WetBulbTemperature_Value_TextChanged);
             // 
-            // Merkel_CWT_Value
+            // Merkel_ColdWaterTemperature_Value
             // 
-            this.Merkel_CWT_Value.Location = new System.Drawing.Point(152, 62);
-            this.Merkel_CWT_Value.Name = "Merkel_CWT_Value";
-            this.Merkel_CWT_Value.Size = new System.Drawing.Size(100, 20);
-            this.Merkel_CWT_Value.TabIndex = 4;
-            this.Merkel_CWT_Value.Text = "90";
+            this.Merkel_ColdWaterTemperature_Value.Location = new System.Drawing.Point(152, 62);
+            this.Merkel_ColdWaterTemperature_Value.Name = "Merkel_CWT_Value";
+            this.Merkel_ColdWaterTemperature_Value.Size = new System.Drawing.Size(100, 20);
+            this.Merkel_ColdWaterTemperature_Value.TabIndex = 4;
+            this.Merkel_ColdWaterTemperature_Value.Text = "90";
+            this.Merkel_ColdWaterTemperature_Value.TextChanged += new System.EventHandler(this.Merkel_ColdWaterTemperature_Value_TextChanged);
             // 
-            // Merkel_HWT_Value
+            // Merkel_HotWaterTemperature_Value
             // 
-            this.Merkel_HWT_Value.Location = new System.Drawing.Point(152, 36);
-            this.Merkel_HWT_Value.Name = "Merkel_HWT_Value";
-            this.Merkel_HWT_Value.Size = new System.Drawing.Size(100, 20);
-            this.Merkel_HWT_Value.TabIndex = 3;
-            this.Merkel_HWT_Value.Text = "80";
+            this.Merkel_HotWaterTemperature_Value.Location = new System.Drawing.Point(152, 36);
+            this.Merkel_HotWaterTemperature_Value.Name = "Merkel_HWT_Value";
+            this.Merkel_HotWaterTemperature_Value.Size = new System.Drawing.Size(100, 20);
+            this.Merkel_HotWaterTemperature_Value.TabIndex = 3;
+            this.Merkel_HotWaterTemperature_Value.Text = "80";
+            this.Merkel_HotWaterTemperature_Value.TextChanged += new System.EventHandler(this.Merkel_HotWaterTemperature_Value_TextChanged);
             // 
             // TemperatureColdWaterLabel
             // 
@@ -243,17 +248,17 @@
         private System.Windows.Forms.Label MerkelWetBulbTemperatureLabel;
         private System.Windows.Forms.Label MerkelTemperatureColdWaterUnits;
         private System.Windows.Forms.Label MerkelTemperatureHotWaterUnits;
-        private System.Windows.Forms.TextBox Merkel_Wet_Bulb_Value;
-        private System.Windows.Forms.TextBox Merkel_CWT_Value;
-        private System.Windows.Forms.TextBox Merkel_HWT_Value;
+        private System.Windows.Forms.TextBox Merkel_WetBulbTemperature_Value;
+        private System.Windows.Forms.TextBox Merkel_ColdWaterTemperature_Value;
+        private System.Windows.Forms.TextBox Merkel_HotWaterTemperature_Value;
         private System.Windows.Forms.Label TemperatureColdWaterLabel;
         private System.Windows.Forms.Label TemperatureHotWaterLabel;
         private System.Windows.Forms.ToolTip toolTip1;
-        private System.Windows.Forms.Label LGLabel;
-        private System.Windows.Forms.TextBox Merkel_LG_Value;
+        private System.Windows.Forms.Label LiquidtoGasRatioLabel;
+        private System.Windows.Forms.TextBox Merkel_LiquidtoGasRatio_Value;
         private System.Windows.Forms.Label MerkelElevationPressureUnits;
         private System.Windows.Forms.TextBox Merkel_Elevation_Value;
-        private System.Windows.Forms.Label MerkelTemperatureWebBulbUnits;
+        private System.Windows.Forms.Label MerkelWebBulbTemperatureUnits;
         private System.Windows.Forms.Button MerkelCalculate;
         private System.Windows.Forms.ComboBox Merkle_Elevation_Pressure_Selector;
     }

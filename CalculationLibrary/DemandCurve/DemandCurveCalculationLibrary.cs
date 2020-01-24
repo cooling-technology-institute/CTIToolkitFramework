@@ -76,7 +76,7 @@ namespace CalculationLibrary
                 WetBulbTemperature = data.WetBulbTemperature,
                 Range = data.Range,
                 Elevation = data.Elevation,
-                WaterAirRatio = 0.1
+                LiquidtoGasRatio = 0.1
             };
 
             foreach (double approachValue in InitialApproachXValues)
@@ -97,7 +97,7 @@ namespace CalculationLibrary
                 WetBulbTemperature = data.WetBulbTemperature,
                 Range = data.Range,
                 Elevation = data.Elevation,
-                WaterAirRatio = data.WaterAirRatio
+                LiquidtoGasRatio = data.WaterAirRatio
             };
 
             if ((data.WaterAirRatio >= 0.1) && (data.WaterAirRatio <= 5.0))
@@ -135,7 +135,7 @@ namespace CalculationLibrary
                 WetBulbTemperature = 80, // data.WetBulbTemperature,
                 Range = data.Range,
                 Elevation = data.Elevation,
-                WaterAirRatio = data.WaterAirRatio
+                LiquidtoGasRatio = data.WaterAirRatio
             };
 
             double kaVL = 0;
@@ -158,7 +158,7 @@ namespace CalculationLibrary
 
                     if (ApproachInRange[i] && !ApproachOutOfRange[i])
                     {
-                        merkelData.WaterAirRatio = waterAirRatio;
+                        merkelData.LiquidtoGasRatio = waterAirRatio;
                         merkelData.Approach = InitialApproachXValues[i];
                         if (data.IsInternationalSystemOfUnits_IS_)
                         {
@@ -188,7 +188,7 @@ namespace CalculationLibrary
                                 {
                                     merkelData.Approach *= 1.8;
                                 }
-                                merkelData.WaterAirRatio = dInterp;
+                                merkelData.LiquidtoGasRatio = dInterp;
                                 kaVL = CalculationLibrary.CalculateMerkel(merkelData);
                             }
                             calculatedWaterAirRatio = dInterp;
