@@ -52,12 +52,16 @@
     <Compile Include="DryBulbTemperatureDataValue.cs" />
     <Compile Include="ElevationDataValue.cs" />
     <Compile Include="EnthalpyDataValue.cs" />
-    <Compile Include="FanDrivePowerDataValue.cs" />
+    <Compile Include="FanDriverPowerDataValue.cs" />
     <Compile Include="HotWaterTemperatureDataValue.cs" />
     <Compile Include="LiquidToGasRatioDataValue.cs" />
     <Compile Include="MaximumDataValue.cs" />
-    <Compile Include="MechanicalDraftPerformanceCurve\MechanicalDraftPerformanceCurveDesignInputData.cs" />
+    <Compile Include="MechanicalDraftPerformanceCurve\MechanicalDraftPerformanceCurveOutputData.cs" />
     <Compile Include="MechanicalDraftPerformanceCurve\MechanicalDraftPerformanceCurveInputData.cs" />
+    <Compile Include="MechanicalDraftPerformanceCurveTowerDesign\MechanicalDraftPerformanceCurveTowerDesignCurveInputData.cs" />
+    <Compile Include="MechanicalDraftPerformanceCurveTowerDesign\MechanicalDraftPerformanceCurveTowerDesignFlowRateInputData.cs" />
+    <Compile Include="MechanicalDraftPerformanceCurveTowerDesign\MechanicalDraftPerformanceCurveTowerDesignInputData.cs" />
+    <Compile Include="MechanicalDraftPerformanceCurveTowerDesign\MechanicalDraftPerformanceCurveTowerDesignViewModel.cs" />
     <Compile Include="MechanicalDraftPerformanceCurve\MechanicalDraftPerformanceCurveViewModel.cs" />
     <Compile Include="Merkel\MerkelInputData.cs" />
     <Compile Include="Merkel\MerkelOutputData.cs" />
@@ -75,7 +79,6 @@
     <Compile Include="SeriesData.cs" />
     <Compile Include="SlopeDataValue.cs" />
     <Compile Include="Units.cs" />
-    <Compile Include="WaterAirFlowRateDataValue.cs" />
     <Compile Include="WaterFlowRateDataValue.cs" />
     <Compile Include="WetBulbTemperatureDataValue.cs" />
   </ItemGroup>

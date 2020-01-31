@@ -1,31 +1,27 @@
 ﻿// Copyright Cooling Technology Institute 2019-2020
 
-using Models;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
-using System.Text;
 
 namespace ViewModels
 {
     public class MechanicalDraftPerformanceCurveInputData
     {
-        public string OwnerName { private set; get; }
-        public string ProjectName { private set; get; }
-        public string Location { private set; get; }
-        public string TowerManufacturer { private set; get; }
-        public TOWER_TYPE TowerType { private set; get; }
-
-        public ColdWaterTemperatureDataValue ColdWaterTemperatureDataValue { get; set; }
+        public WaterFlowRateDataValue WaterFlowRateDataValue { get; set; }
         public HotWaterTemperatureDataValue HotWaterTemperatureDataValue { get; set; }
+        public ColdWaterTemperatureDataValue ColdWaterTemperatureDataValue { get; set; }
         public WetBulbTemperatureDataValue WetBulbTemperatureDataValue { get; set; }
         public DryBulbTemperatureDataValue DryBulbTemperatureDataValue { get; set; }
+        public FanDriverPowerDataValue FanDriverPowerDataValue { get; set; }
         public BarometricPressureDataValue BarometricPressureDataValue { get; set; }
-        public LiquidToGasRatioDataValue LiquidToGasRatioRateDataValue { get; set; }
-        public WaterAirFlowRateDataValue WaterAirFlowRateDataValue { get; set; }
+        public LiquidToGasRatioDataValue LiquidToGasRatioDataValue { get; set; }
+
+        public MechanicalDraftPerformanceCurveTowerDesignInputData MechanicalDraftPerformanceCurveTowerDesignInputData { get; set; }
 
         public List<string> MechanicalDraftPerformanceCurveFileList { get; set; }
+
+        public string MechanicalDraftPerformanceCurvePerformanceDataFile { get; set; }
 
         public bool IsDemo { get; set; }
         public bool IsInternationalSystemOfUnits_IS { get; set; }
@@ -36,13 +32,16 @@ namespace ViewModels
             IsDemo = isDemo;
             IsInternationalSystemOfUnits_IS = isInternationalSystemOfUnits_IS_;
 
-            ColdWaterTemperatureDataValue = new ColdWaterTemperatureDataValue(IsDemo, IsInternationalSystemOfUnits_IS);
+            WaterFlowRateDataValue = new WaterFlowRateDataValue(IsDemo, IsInternationalSystemOfUnits_IS);
             HotWaterTemperatureDataValue = new HotWaterTemperatureDataValue(IsDemo, IsInternationalSystemOfUnits_IS);
+            ColdWaterTemperatureDataValue = new ColdWaterTemperatureDataValue(IsDemo, IsInternationalSystemOfUnits_IS);
             WetBulbTemperatureDataValue = new WetBulbTemperatureDataValue(IsDemo, IsInternationalSystemOfUnits_IS);
             DryBulbTemperatureDataValue = new DryBulbTemperatureDataValue(IsDemo, IsInternationalSystemOfUnits_IS);
+            FanDriverPowerDataValue = new FanDriverPowerDataValue(IsDemo, IsInternationalSystemOfUnits_IS);
             BarometricPressureDataValue = new BarometricPressureDataValue(IsDemo, IsInternationalSystemOfUnits_IS);
-            LiquidToGasRatioRateDataValue = new LiquidToGasRatioDataValue(IsDemo, IsInternationalSystemOfUnits_IS);
-            WaterAirFlowRateDataValue = new WaterAirFlowRateDataValue(IsDemo, IsInternationalSystemOfUnits_IS);
+            LiquidToGasRatioDataValue = new LiquidToGasRatioDataValue(IsDemo, IsInternationalSystemOfUnits_IS);
+
+            MechanicalDraftPerformanceCurveTowerDesignInputData = new MechanicalDraftPerformanceCurveTowerDesignInputData(IsDemo, IsInternationalSystemOfUnits_IS);
 
             BuildFileList();
         }
@@ -93,12 +92,15 @@ namespace ViewModels
             if (IsInternationalSystemOfUnits_IS != isIS)
             {
                 IsInternationalSystemOfUnits_IS = isIS;
+                WaterFlowRateDataValue.ConvertValue(IsInternationalSystemOfUnits_IS, true);
+                HotWaterTemperatureDataValue.ConvertValue(IsInternationalSystemOfUnits_IS, true); 
                 ColdWaterTemperatureDataValue.ConvertValue(IsInternationalSystemOfUnits_IS, true);
-                HotWaterTemperatureDataValue.ConvertValue(IsInternationalSystemOfUnits_IS, true);
                 WetBulbTemperatureDataValue.ConvertValue(IsInternationalSystemOfUnits_IS, true);
                 DryBulbTemperatureDataValue.ConvertValue(IsInternationalSystemOfUnits_IS, true);
-                WaterAirFlowRateDataValue.ConvertValue(IsInternationalSystemOfUnits_IS, true);
+                FanDriverPowerDataValue.ConvertValue(IsInternationalSystemOfUnits_IS, true);
                 BarometricPressureDataValue.ConvertValue(IsInternationalSystemOfUnits_IS, true);
+                LiquidToGasRatioDataValue.ConvertValue(IsInternationalSystemOfUnits_IS, true);
+                //MechanicalDraftPerformanceCurveDesignInputData.ConvertValue(IsInternationalSystemOfUnits_IS, true);
                 isChanged = true;
             }
             return isChanged;

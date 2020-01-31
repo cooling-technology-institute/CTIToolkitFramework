@@ -13,8 +13,6 @@ namespace CTIToolkit
     public partial class MerkelTabPage: UserControl
     {
         private MerkelViewModel MerkelViewModel { get; set; }
-        private MerkelData MerkelData { get; set; }
-        private MerkelCalculationLibrary MerkelCalculationLibrary { get; set; }
         private bool IsDemo { get; set; }
         private bool IsInternationalSystemOfUnits_IS_ { get; set; }
 
@@ -25,7 +23,6 @@ namespace CTIToolkit
             IsInternationalSystemOfUnits_IS_ = (applicationSettings.UnitsSelection == UnitsSelection.International_System_Of_Units_SI);
 
             MerkelViewModel = new MerkelViewModel(IsDemo, IsInternationalSystemOfUnits_IS_);
-            MerkelCalculationLibrary = new MerkelCalculationLibrary();
 
             Setup();
 
