@@ -21,7 +21,7 @@ namespace ViewModels
         public ColdWaterTemperatureDataValue ColdWaterTemperatureDataValue { get; set; }
         public WetBulbTemperatureDataValue WetBulbTemperatureDataValue { get; set; }
         public ElevationDataValue ElevationDataValue { get; set; }
-        public LiquidtoGasRatioDataValue LiquidtoGasRatioDataValue { get; set; }
+        public LiquidToGasRatioDataValue LiquidToGasRatioDataValue { get; set; }
         public BarometricPressureDataValue BarometricPressureDataValue { get; set; }
 
         public MerkelInputData(bool isDemo, bool isInternationalSystemOfUnits_IS_)
@@ -33,7 +33,7 @@ namespace ViewModels
             ColdWaterTemperatureDataValue = new ColdWaterTemperatureDataValue(IsDemo, IsInternationalSystemOfUnits_IS);
             WetBulbTemperatureDataValue = new WetBulbTemperatureDataValue(IsDemo, IsInternationalSystemOfUnits_IS);
             ElevationDataValue = new ElevationDataValue(IsDemo, IsInternationalSystemOfUnits_IS);
-            LiquidtoGasRatioDataValue = new LiquidtoGasRatioDataValue(IsDemo, IsInternationalSystemOfUnits_IS);
+            LiquidToGasRatioDataValue  = new LiquidToGasRatioDataValue(IsDemo, IsInternationalSystemOfUnits_IS);
             BarometricPressureDataValue = new BarometricPressureDataValue(IsDemo, IsInternationalSystemOfUnits_IS);
         }
 
@@ -46,7 +46,7 @@ namespace ViewModels
                 IsInternationalSystemOfUnits_IS = isIS;
                 HotWaterTemperatureDataValue.ConvertValue(IsInternationalSystemOfUnits_IS, true);
                 ColdWaterTemperatureDataValue.ConvertValue(IsInternationalSystemOfUnits_IS, true);
-                LiquidtoGasRatioDataValue.ConvertValue(IsInternationalSystemOfUnits_IS, true);
+                LiquidToGasRatioDataValue .ConvertValue(IsInternationalSystemOfUnits_IS, true);
                 ElevationDataValue.ConvertValue(IsInternationalSystemOfUnits_IS, true);
                 WetBulbTemperatureDataValue.ConvertValue(IsInternationalSystemOfUnits_IS, true);
                 BarometricPressureDataValue.ConvertValue(IsInternationalSystemOfUnits_IS, true);
@@ -90,28 +90,13 @@ namespace ViewModels
             return isChanged;
         }
 
-        public bool FillData(MerkelData data, bool isElevation, bool isInternationalSystemOfUnits_IS, out string message)
+        public bool FillMerkelData(MerkelData data, bool isElevation, out string errorMessage)
         {
-            if (isElevation)
-            {
-                if (!MerkelViewModel.MerkelInputData.ElevationDataValue.UpdateValue(Merkel_Elevation_Value.Text, out message))
-                {
-                    MessageBox.Show(message);
-                    return;
-                }
-            }
-            else
-            {
-                if (!MerkelViewModel.MerkelInputData.BarometricPressureDataValue.UpdateValue(Merkel_Elevation_Value.Text, out message))
-                {
-                    MessageBox.Show(message);
-                    return;
-                }
-            }
+            errorMessage = string.Empty;
 
             if (HotWaterTemperatureDataValue.Current < ColdWaterTemperatureDataValue.Current)
             {
-                message = "The Hot Water Temperature value must be greater than the Cold Water Temperature value";
+                errorMessage = "The Hot Water Temperature value must be greater than the Cold Water Temperature value";
                 return false;
             }
 
@@ -119,8 +104,9 @@ namespace ViewModels
             data.ColdWaterTemperature = ColdWaterTemperatureDataValue.Current;
             data.WetBulbTemperature = WetBulbTemperatureDataValue.Current;
             data.Elevation = ElevationDataValue.Current;
-            data.LiquidtoGasRatio = LiquidtoGasRatioDataValue.Current;
+            data.LiquidToGasRatio = LiquidToGasRatioDataValue .Current;
             data.BarometricPressure = BarometricPressureDataValue.Current;
+
             return true;
         }
 

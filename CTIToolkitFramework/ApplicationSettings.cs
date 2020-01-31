@@ -43,9 +43,9 @@ namespace CTIToolkit
 
         private void UpdateSettings()
         {
-            Properties.Settings.Default.UnitsSelection = UnitsSelection.ToString();
-            Properties.Settings.Default.IsDemo = IsDemo.ToString();
-            Properties.Settings.Default.Save();
+            //Properties.Settings.Default.UnitsSelection = UnitsSelection.ToString();
+            //Properties.Settings.Default.IsDemo = IsDemo.ToString();
+            //Properties.Settings.Default.Save();
             ////Load appsettings
             //Configuration config = ConfigurationManager.OpenExeConfiguration(System.Reflection.Assembly.GetExecutingAssembly().Location);
 
@@ -76,7 +76,7 @@ namespace CTIToolkit
             string appSettingsUnitsSelection = null;
             try
             {
-                appSettingsUnitsSelection = Properties.Settings.Default.UnitsSelection;
+                //appSettingsUnitsSelection = Properties.Settings.Default.UnitsSelection;
             }
             catch
             { }

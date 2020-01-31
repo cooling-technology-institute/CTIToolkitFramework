@@ -65,12 +65,12 @@
             // 
             // logo
             // 
-            this.logo.Image = global::CTIToolkit.Properties.Resources.CTI_Logo;
-            this.logo.Location = new System.Drawing.Point(25, 14);
-            this.logo.Name = "logo";
-            this.logo.Size = new System.Drawing.Size(185, 179);
-            this.logo.TabIndex = 2;
-            this.logo.TabStop = false;
+            //this.logo.Image = global::CTIToolkit.Properties.Resources.CTI_Logo;
+            //this.logo.Location = new System.Drawing.Point(25, 14);
+            //this.logo.Name = "logo";
+            //this.logo.Size = new System.Drawing.Size(185, 179);
+            //this.logo.TabIndex = 2;
+            //this.logo.TabStop = false;
             // 
             // copyright
             // 

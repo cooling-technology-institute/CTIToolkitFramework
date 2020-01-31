@@ -1,6 +1,7 @@
 ﻿// Copyright Cooling Technology Institute 2019-2020
 
 using CalculationLibrary;
+using Models;
 
 namespace ViewModels
 {
@@ -13,8 +14,9 @@ namespace ViewModels
 
         public WetBulbTemperatureDataValue WetBulbTemperatureDataValue { get; set; }
         public RangeDataValue RangeDataValue { get; set; }
+        public ApproachDataValue ApproachDataValue { get; set; }
         public ElevationDataValue ElevationDataValue { get; set; }
-        public LiquidToGasRatioRateDataValue LiquidToGasRatioRateDataValue { get; set; }
+        public LiquidToGasRatioDataValue LiquidToGasRatioDataValue { get; set; }
         public BarometricPressureDataValue BarometricPressureDataValue { get; set; }
         public C1DataValue C1DataValue { get; set; }
         public SlopeDataValue SlopeDataValue { get; set; }
@@ -35,7 +37,7 @@ namespace ViewModels
             SlopeDataValue = new SlopeDataValue(IsDemo, IsInternationalSystemOfUnits_IS);
             MinimumDataValue = new MinimumDataValue(IsDemo, IsInternationalSystemOfUnits_IS);
             MaximumDataValue = new MaximumDataValue(IsDemo, IsInternationalSystemOfUnits_IS);
-            LiquidToGasRatioRateDataValue = new LiquidToGasRatioRateDataValue(IsDemo, IsInternationalSystemOfUnits_IS);
+            LiquidToGasRatioDataValue = new LiquidToGasRatioDataValue(IsDemo, IsInternationalSystemOfUnits_IS);
         }
 
         public bool ConvertValues(bool isIS, bool isElevation)
@@ -45,7 +47,7 @@ namespace ViewModels
             if (IsInternationalSystemOfUnits_IS != isIS)
             {
                 IsInternationalSystemOfUnits_IS = isIS;
-                LiquidToGasRatioRateDataValue.ConvertValue(IsInternationalSystemOfUnits_IS, true);
+                LiquidToGasRatioDataValue.ConvertValue(IsInternationalSystemOfUnits_IS, true);
                 ElevationDataValue.ConvertValue(IsInternationalSystemOfUnits_IS, true);
                 WetBulbTemperatureDataValue.ConvertValue(IsInternationalSystemOfUnits_IS, true);
                 BarometricPressureDataValue.ConvertValue(IsInternationalSystemOfUnits_IS, true);
@@ -89,14 +91,30 @@ namespace ViewModels
             return isChanged;
         }
 
-        public void SetElevation(bool value)
+        public bool FillDemandCurveData(DemandCurveData data, bool isElevation, bool showUserApproach, out string errorMessage)
         {
-            IsElevation = value;
-        }
+            errorMessage = string.Empty;
 
-        public void SetDemo(bool value)
-        {
-            IsDemo = value;
+            if(MinimumDataValue.Current >= MaximumDataValue.Current)
+            {
+                errorMessage = "Minimum value must be less than the Maximum value";
+                return false;
+            }
+
+            data.CurveC1 = C1DataValue.Current;
+            data.CurveC2 = SlopeDataValue.Current;
+            data.LiquidToGasRatio = LiquidToGasRatioDataValue.Current;
+            data.Elevation = ElevationDataValue.Current;
+            data.LiquidToGasRatio = LiquidToGasRatioDataValue.Current;
+            data.BarometricPressure = BarometricPressureDataValue.Current;
+            data.KaV_L = BarometricPressureDataValue.Current;
+            data.CurveMinimum = MinimumDataValue.Current;
+            data.CurveMaximum = MaximumDataValue.Current;
+            data.WetBulbTemperature = WetBulbTemperatureDataValue.Current;
+            data.Range = RangeDataValue.Current;
+            data.Approach = ApproachDataValue.Current;
+
+            return true;
         }
     }
 }

@@ -23,7 +23,7 @@ namespace ViewModels
         public DryBulbTemperatureDataValue DryBulbTemperatureDataValue { set; get; }
         public FanDrivePowerDataValue FanDrivePowerDataValue { set; get; }
         public BarometricPressureDataValue BarometricPressureDataValue { set; get; }
-        public LiquidToGasRatioRateDataValue LiquidToGasRatioRateDataValue { set; get; }
+        public LiquidToGasRatioDataValue LiquidToGasRatioRateDataValue { set; get; }
         public WaterFlowRateDataValue WaterFlowRateDataValue { set; get; }
 
         public RangeDataValue RangeDataValue1 { get; set; }
@@ -50,7 +50,7 @@ namespace ViewModels
             WetBulbTemperatureDataValue = new WetBulbTemperatureDataValue(IsDemo, IsInternationalSystemOfUnits_IS);
             DryBulbTemperatureDataValue = new DryBulbTemperatureDataValue(IsDemo, IsInternationalSystemOfUnits_IS);
             BarometricPressureDataValue = new BarometricPressureDataValue(IsDemo, IsInternationalSystemOfUnits_IS);
-            LiquidToGasRatioRateDataValue = new LiquidToGasRatioRateDataValue(IsDemo, IsInternationalSystemOfUnits_IS);
+            LiquidToGasRatioRateDataValue = new LiquidToGasRatioDataValue(IsDemo, IsInternationalSystemOfUnits_IS);
             WaterFlowRateDataValue = new WaterFlowRateDataValue(IsDemo, IsInternationalSystemOfUnits_IS);
         }
     }

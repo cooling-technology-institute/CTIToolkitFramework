@@ -27,7 +27,7 @@ namespace ViewModels
             NameValueUnitsDataTable.DataTable.Clear();
         }
 
-        public void FillTable(PsychrometricsData data)
+        public void FillDataTable(PsychrometricsData data)
         {
             ClearTable();
 

@@ -4,8 +4,6 @@ using System;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
-using CalculationLibrary;
-using Models;
 using ViewModels;
 
 namespace CTIToolkit
@@ -28,25 +26,17 @@ namespace CTIToolkit
 
             PsychrometricsViewModel = new PsychrometricsViewModel(IsDemo, IsInternationalSystemOfUnits_IS_);
 
-            SwitchCalculation();
-
-            PsychrometricsViewModel.CalculatePsychrometrics();
-
         }
 
         public void SetUnitsStandard(ApplicationSettings applicationSettings)
         {
             IsInternationalSystemOfUnits_IS_ = (applicationSettings.UnitsSelection == UnitsSelection.International_System_Of_Units_SI);
+
             SwitchUnitsSelection();
         }
 
         private void SwitchUnitsSelection()
         {
-            if (PsychrometricsViewModel.ConvertValues(IsInternationalSystemOfUnits_IS_))
-            {
-                SwitchCalculation();
-            }
-
             if (IsInternationalSystemOfUnits_IS_)
             {
                 if (Psychrometrics_DryBulbTemperature_RelativeHumidity.Checked)
@@ -67,13 +57,13 @@ namespace CTIToolkit
                     PsychrometricsTemperatureDryBulbUnits.Text = ConstantUnits.TemperatureCelsius;
                 }
 
-                if (PyschmetricsElevationRadio.Checked)
+                if (PsychrometricsElevationRadio.Checked)
                 {
-                    PsychrometricsElevationPressureLabel2.Text = ConstantUnits.Meter;
+                    PsychrometricsElevationPressureUnits.Text = ConstantUnits.Meter;
                 }
                 else
                 {
-                    PsychrometricsElevationPressureLabel2.Text = ConstantUnits.BarometricPressureKiloPascal;
+                    PsychrometricsElevationPressureUnits.Text = ConstantUnits.BarometricPressureKiloPascal;
                 }
             }
             else
@@ -96,133 +86,75 @@ namespace CTIToolkit
                     PsychrometricsTemperatureDryBulbUnits.Text = ConstantUnits.TemperatureFahrenheit;
                 }
 
-                if (PyschmetricsElevationRadio.Checked)
+                if (PsychrometricsElevationRadio.Checked)
                 {
-                    PsychrometricsElevationPressureLabel2.Text = ConstantUnits.Foot;
+                    PsychrometricsElevationPressureUnits.Text = ConstantUnits.Foot;
                 }
                 else
                 {
-                    PsychrometricsElevationPressureLabel2.Text = ConstantUnits.BarometricPressureInchOfMercury;
+                    PsychrometricsElevationPressureUnits.Text = ConstantUnits.BarometricPressureInchOfMercury;
                 }
             }
         }
 
-        private void SwitchElevationPressure()
+        private void PyschmetricsElevationRadio_CheckedChanged(object sender, EventArgs e)
         {
-            //PsychrometricsData.SetElevation(PyschmetricsElevationRadio.Checked);
-
-            if (PyschmetricsElevationRadio.Checked)
+            if (PsychrometricsElevationRadio.Checked)
             {
-                double value = 0.0;
-                if (double.TryParse(Psychrometrics_Elevation_Value.Text, out value))
-                {
-                    value = UnitConverter.ConvertBarometricPressureToElevationInFeet(value);
-                }
-                else
-                {
-                    value = PsychrometricsViewModel.PsychrometricsInputData.ElevationDataValue.Default;
-                }
-                Psychrometrics_Elevation_Value.Text = PsychrometricsViewModel.PsychrometricsInputData.ElevationDataValue.InputValue;
-                PsychrometricsElevationPressureLabel1.Text = PsychrometricsViewModel.PsychrometricsInputData.ElevationDataValue.InputMessage + ":";
+                ClearDataSource();
+
+                Psychrometrics_Elevation_Value.Text = PsychrometricsViewModel.ElevationDataValueInputValue;
+                PsychrometricsElevationPressureLabel.Text = PsychrometricsViewModel.ElevationDataValueInputMessage + ":";
                 if (IsInternationalSystemOfUnits_IS_)
                 {
-                    PsychrometricsElevationPressureLabel2.Text = ConstantUnits.Meter;
+                    PsychrometricsElevationPressureUnits.Text = ConstantUnits.Meter;
                 }
                 else
                 {
-                    PsychrometricsElevationPressureLabel2.Text = ConstantUnits.Foot;
-                }
-            }
-            else
-            {
-                double value = 0.0;
-                if (double.TryParse(Psychrometrics_Elevation_Value.Text, out value))
-                {
-                    value = UnitConverter.ConvertElevationInFeetToBarometricPressure(value);
-                    value = UnitConverter.CalculatePressureFahrenheit(value);
-
-                }
-                else
-                {
-                    value = PsychrometricsViewModel.PsychrometricsInputData.BarometricPressureDataValue.Default;
-                }
-                Psychrometrics_Elevation_Value.Text = PsychrometricsViewModel.PsychrometricsInputData.BarometricPressureDataValue.InputValue;
-                PsychrometricsElevationPressureLabel1.Text = PsychrometricsViewModel.PsychrometricsInputData.BarometricPressureDataValue.InputMessage + ":";
-                if (IsInternationalSystemOfUnits_IS_)
-                {
-                    PsychrometricsElevationPressureLabel2.Text = ConstantUnits.BarometricPressureKiloPascal;
-                }
-                else
-                {
-                    PsychrometricsElevationPressureLabel2.Text = ConstantUnits.BarometricPressureInchOfMercury;
+                    PsychrometricsElevationPressureUnits.Text = ConstantUnits.Foot;
                 }
             }
         }
 
-        private void SwitchCalculation()
+        private void PsychrometricsPressureRadio_CheckedChanged(object sender, EventArgs e)
         {
-            string tooltip = string.Empty;
+            if (PsychrometricsPressureRadio.Checked)
+            {
+                ClearDataSource();
 
-            if (Psychrometrics_Enthalpy.Checked)
-            {
-                TemperatureWetBulbLabel.Visible = false;
-                PsychrometricsTemperatureWetBulbUnits.Visible = false;
-                Psychrometrics_WBT_Value.Visible = false;
+                Psychrometrics_Elevation_Value.Text = PsychrometricsViewModel.BarometricPressureDataValueInputValue;
+                PsychrometricsElevationPressureLabel.Text = PsychrometricsViewModel.BarometricPressureDataValueInputMessage + ":";
+
+                if (IsInternationalSystemOfUnits_IS_)
+                {
+                    PsychrometricsElevationPressureUnits.Text = ConstantUnits.BarometricPressureKiloPascal;
+                }
+                else
+                {
+                    PsychrometricsElevationPressureUnits.Text = ConstantUnits.BarometricPressureInchOfMercury;
+                }
             }
-            else
+        }
+
+        private void Psychrometrics_WetBulbTemperature_DryBulbTemperature_CheckedChanged(object sender, EventArgs e)
+        {
+            if (Psychrometrics_WetBulbTemperature_DryBulbTemperature.Checked)
             {
-                TemperatureWetBulbLabel.Visible = true;
+                ClearDataSource();
+
+                WetBulbTemperatureLabel.Visible = true;
                 PsychrometricsTemperatureWetBulbUnits.Visible = true;
-                Psychrometrics_WBT_Value.Visible = true;
-            }
+                Psychrometrics_WetBulbTemperature_Value.Visible = true;
 
-            if (Psychrometrics_DryBulbTemperature_RelativeHumidity.Checked)
-            {
-                TemperatureWetBulbLabel.Text = PsychrometricsViewModel.PsychrometricsInputData.RelativeHumidityDataValue.InputMessage + ":";
-                TemperatureWetBulbLabel.TextAlign = ContentAlignment.MiddleRight;
-                PsychrometricsTemperatureWetBulbUnits.Text = ConstantUnits.Percentage;
-                Psychrometrics_WBT_Value.Text = PsychrometricsViewModel.PsychrometricsInputData.RelativeHumidityDataValue.InputValue;
-                toolTip1.SetToolTip(Psychrometrics_WBT_Value, PsychrometricsViewModel.PsychrometricsInputData.RelativeHumidityDataValue.ToolTip);
+                WetBulbTemperatureLabel.Text = PsychrometricsViewModel.WetBulbTemperatureDataValueInputMessage + ":";
+                WetBulbTemperatureLabel.TextAlign = ContentAlignment.MiddleRight;
+                Psychrometrics_WetBulbTemperature_Value.Text = PsychrometricsViewModel.WetBulbTemperatureDataValueInputValue;
+                toolTip1.SetToolTip(Psychrometrics_WetBulbTemperature_Value, PsychrometricsViewModel.WetBulbTemperatureDataValueToolTip);
 
-                TemperatureDryBulbLabel.Text = PsychrometricsViewModel.PsychrometricsInputData.DryBulbTemperatureDataValue.InputMessage + ":";
-                Psychrometrics_DBT_Value.Text = PsychrometricsViewModel.PsychrometricsInputData.DryBulbTemperatureDataValue.InputValue;
-                toolTip1.SetToolTip(Psychrometrics_DBT_Value, PsychrometricsViewModel.PsychrometricsInputData.DryBulbTemperatureDataValue.ToolTip);
-                if (IsInternationalSystemOfUnits_IS_)
-                {
-                    PsychrometricsTemperatureDryBulbUnits.Text = ConstantUnits.TemperatureCelsius;
-                }
-                else
-                {
-                    PsychrometricsTemperatureDryBulbUnits.Text = ConstantUnits.TemperatureFahrenheit;
-                }
-            }
-            else if (Psychrometrics_Enthalpy.Checked)
-            {
-                TemperatureDryBulbLabel.Text = PsychrometricsViewModel.PsychrometricsInputData.EnthalpyDataValue.InputMessage + ":";
+                TemperatureDryBulbLabel.Text = PsychrometricsViewModel.DryBulbTemperatureDataValueInputMessage + ":";
                 TemperatureDryBulbLabel.TextAlign = ContentAlignment.MiddleRight;
-                toolTip1.SetToolTip(Psychrometrics_DBT_Value, PsychrometricsViewModel.PsychrometricsInputData.EnthalpyDataValue.ToolTip);
-
-                if (IsInternationalSystemOfUnits_IS_)
-                {
-                    PsychrometricsTemperatureDryBulbUnits.Text = ConstantUnits.KilojoulesPerKilogram;
-                }
-                else
-                {
-                    PsychrometricsTemperatureDryBulbUnits.Text = ConstantUnits.BtuPerPound;
-                }
-                Psychrometrics_DBT_Value.Text = PsychrometricsViewModel.PsychrometricsInputData.EnthalpyDataValue.InputValue;
-            }
-            else
-            {
-                TemperatureWetBulbLabel.Text = PsychrometricsViewModel.PsychrometricsInputData.WetBulbTemperatureDataValue.InputMessage + ":";
-                TemperatureWetBulbLabel.TextAlign = ContentAlignment.MiddleRight;
-                Psychrometrics_WBT_Value.Text = PsychrometricsViewModel.PsychrometricsInputData.WetBulbTemperatureDataValue.InputValue;
-                toolTip1.SetToolTip(Psychrometrics_WBT_Value, PsychrometricsViewModel.PsychrometricsInputData.WetBulbTemperatureDataValue.ToolTip);
-
-                TemperatureDryBulbLabel.Text = PsychrometricsViewModel.PsychrometricsInputData.DryBulbTemperatureDataValue.InputMessage + ":";
-                TemperatureDryBulbLabel.TextAlign = ContentAlignment.MiddleRight;
-                Psychrometrics_DBT_Value.Text = PsychrometricsViewModel.PsychrometricsInputData.DryBulbTemperatureDataValue.InputValue;
-                toolTip1.SetToolTip(Psychrometrics_WBT_Value, PsychrometricsViewModel.PsychrometricsInputData.WetBulbTemperatureDataValue.ToolTip);
+                Psychrometrics_DryBulbTemperature_Value.Text = PsychrometricsViewModel.DryBulbTemperatureDataValueInputValue;
+                toolTip1.SetToolTip(Psychrometrics_WetBulbTemperature_Value, PsychrometricsViewModel.WetBulbTemperatureDataValueToolTip);
 
                 if (IsInternationalSystemOfUnits_IS_)
                 {
@@ -237,85 +169,33 @@ namespace CTIToolkit
             }
         }
 
-
-        private void PyschmetricsElevationRadio_CheckedChanged(object sender, EventArgs e)
-        {
-            if (PyschmetricsElevationRadio.Checked)
-            {
-                SwitchElevationPressure();
-
-                PsychrometricsViewModel.CalculatePsychrometrics();
-            }
-        }
-
-        private void PyschmetricsPressureRadio_CheckedChanged(object sender, EventArgs e)
-        {
-            if (PyschmetricsPressureRadio.Checked)
-            {
-                SwitchElevationPressure();
-
-                PsychrometricsViewModel.CalculatePsychrometrics();
-            }
-        }
-
-        private void Psychrometrics_WetBulbTemperature_DryBulbTemperature_CheckedChanged(object sender, EventArgs e)
-        {
-            if (Psychrometrics_WetBulbTemperature_DryBulbTemperature.Checked)
-            {
-                //    if (!PsychrometricsInputData.DryBulbTemperatureDataValue.UpdateValue(Psychrometrics_DBT_Value.Text, out message))
-                //    {
-                //        MessageBox.Show(message);
-                //        return;
-                //    }
-                //    if (!PsychrometricsInputData.WetBulbTemperatureDataValue.UpdateValue(Psychrometrics_WBT_Value.Text, out message))
-                //    {
-                //        MessageBox.Show(message);
-                //        return;
-                //    }
-                //    if (PsychrometricsInputData.DryBulbTemperatureDataValue.Current < PsychrometricsViewModel.PsychrometricsInputData.WetBulbTemperatureDataValue.Current)
-                //    {
-                //        MessageBox.Show("The Dry Bulb Temperature value must be greater than the Wet Bulb Temperature value");
-                //        return;
-                //    }
-                //}
-
-                PsychrometricsViewModel.PsychrometricsInputData.CalculationType = PsychrometricsCalculationType.Psychrometrics_WetBulbTemperature_DryBulbTemperature;
-
-                SwitchCalculation();
-
-                PsychrometricsViewModel.CalculatePsychrometrics();
-            }
-
-        }
-
         private void Psychrometrics_DryBulbTemperature_RelativeHumidity_CheckedChanged(object sender, EventArgs e)
         {
             if (Psychrometrics_DryBulbTemperature_RelativeHumidity.Checked)
             {
-                PsychrometricsViewModel.UpdateCalculationType(PsychrometricsCalculationType.Psychrometrics_DryBulbTemperature_RelativeHumidity);
+                ClearDataSource();
 
-                SwitchCalculation();
+                WetBulbTemperatureLabel.Visible = true;
+                PsychrometricsTemperatureWetBulbUnits.Visible = true;
+                Psychrometrics_WetBulbTemperature_Value.Visible = true;
 
-                string errorMessage = PsychrometricsViewModel.CalculatePsychrometrics();
+                WetBulbTemperatureLabel.Text = PsychrometricsViewModel.RelativeHumidityDataValueInputMessage + ":";
+                WetBulbTemperatureLabel.TextAlign = ContentAlignment.MiddleRight;
+                PsychrometricsTemperatureWetBulbUnits.Text = ConstantUnits.Percentage;
+                Psychrometrics_WetBulbTemperature_Value.Text = PsychrometricsViewModel.RelativeHumidityDataValueInputValue;
+                toolTip1.SetToolTip(Psychrometrics_WetBulbTemperature_Value, PsychrometricsViewModel.RelativeHumidityDataValueToolTip);
 
-                if (string.IsNullOrEmpty(errorMessage))
+                TemperatureDryBulbLabel.Text = PsychrometricsViewModel.DryBulbTemperatureDataValueInputMessage + ":";
+                Psychrometrics_DryBulbTemperature_Value.Text = PsychrometricsViewModel.DryBulbTemperatureDataValueInputValue;
+                toolTip1.SetToolTip(Psychrometrics_DryBulbTemperature_Value, PsychrometricsViewModel.DryBulbTemperatureDataValueToolTip);
+
+                if (IsInternationalSystemOfUnits_IS_)
                 {
-                    //convert data to table
-                    // clear data set
-                    if (Psychrometrics_GridView.DataSource != null)
-                    {
-                        Psychrometrics_GridView.DataSource = null;
-                    }
-
-                    // Create a DataView using the DataTable.
-                    DataView view = new DataView(PsychrometricsViewModel.PsychrometricsOutputData.NameValueUnitsDataTable.DataTable);
-
-                    // Set a DataGrid control's DataSource to the DataView.
-                    Psychrometrics_GridView.DataSource = view;
+                    PsychrometricsTemperatureDryBulbUnits.Text = ConstantUnits.TemperatureCelsius;
                 }
                 else
                 {
-                    MessageBox.Show(errorMessage, "Psychrometrics Calculation Error");
+                    PsychrometricsTemperatureDryBulbUnits.Text = ConstantUnits.TemperatureFahrenheit;
                 }
             }
         }
@@ -324,23 +204,136 @@ namespace CTIToolkit
         {
             if (Psychrometrics_Enthalpy.Checked)
             {
-                //    if (!PsychrometricsInputData.EnthalpyDataValue.UpdateValue(Psychrometrics_DBT_Value.Text, out message))
-                //    {
-                //        MessageBox.Show(message);
-                //        return;
-                //    }
+                ClearDataSource();
 
-                PsychrometricsViewModel.PsychrometricsInputData.CalculationType = PsychrometricsCalculationType.Psychrometrics_Enthalpy;
+                WetBulbTemperatureLabel.Visible = false;
+                PsychrometricsTemperatureWetBulbUnits.Visible = false;
+                Psychrometrics_WetBulbTemperature_Value.Visible = false;
 
-                SwitchCalculation();
+                TemperatureDryBulbLabel.Text = PsychrometricsViewModel.EnthalpyDataValueInputMessage + ":";
+                TemperatureDryBulbLabel.TextAlign = ContentAlignment.MiddleRight;
+                toolTip1.SetToolTip(Psychrometrics_DryBulbTemperature_Value, PsychrometricsViewModel.EnthalpyDataValueToolTip);
 
-                PsychrometricsViewModel.CalculatePsychrometrics();
+                if (IsInternationalSystemOfUnits_IS_)
+                {
+                    PsychrometricsTemperatureDryBulbUnits.Text = ConstantUnits.KilojoulesPerKilogram;
+                }
+                else
+                {
+                    PsychrometricsTemperatureDryBulbUnits.Text = ConstantUnits.BtuPerPound;
+                }
+                Psychrometrics_DryBulbTemperature_Value.Text = PsychrometricsViewModel.EnthalpyDataValueInputValue;
+            }
+        }
+
+        private void ClearDataSource()
+        {
+            if (Psychrometrics_GridView.DataSource != null)
+            {
+                Psychrometrics_GridView.DataSource = null;
             }
         }
 
         private void PsychrometricsCalculate_Click(object sender, EventArgs e)
         {
-            PsychrometricsViewModel.CalculatePsychrometrics();
+            string errorMessage = string.Empty;
+            ClearDataSource();
+            try
+            {
+                if (PsychrometricsViewModel.CalculatePsychrometrics(PsychrometricsElevationRadio.Checked, out errorMessage))
+                {
+                    if (PsychrometricsViewModel.GetDataTable() != null)
+                    {
+                        // Set a DataGrid control's DataSource to the DataView.
+                        Psychrometrics_GridView.DataSource = new DataView(PsychrometricsViewModel.GetDataTable());
+                    }
+                }
+                else
+                {
+                    MessageBox.Show(errorMessage);
+                }
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(string.Format("Error in Merkel calculation. Please check your input values. Exception Message: {0}", exception.Message), "Merkel Calculation Error");
+            }
+        }
+
+        private void Psychrometrics_Elevation_Value_Validated(object sender, EventArgs e)
+        {
+            errorProvider1.SetError(Psychrometrics_Elevation_Value, "");
+        }
+
+        private void Psychrometrics_Elevation_Value_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            string errorMessage = string.Empty;
+
+            if (PsychrometricsElevationRadio.Checked)
+            {
+                if (!PsychrometricsViewModel.ElevationDataValueUpdateValue(Psychrometrics_Elevation_Value.Text, out errorMessage))
+                {
+                    // Cancel the event and select the text to be corrected by the user.
+                    e.Cancel = true;
+                    Psychrometrics_Elevation_Value.Select(0, Psychrometrics_Elevation_Value.Text.Length);
+
+                    // Set the ErrorProvider error with the text to display. 
+                    this.errorProvider1.SetError(Psychrometrics_Elevation_Value, errorMessage);
+                }
+            }
+            else
+            {
+                if (!PsychrometricsViewModel.BarometricPressureDataValueUpdateValue(Psychrometrics_Elevation_Value.Text, out errorMessage))
+                {
+                    // Cancel the event and select the text to be corrected by the user.
+                    e.Cancel = true;
+                    Psychrometrics_Elevation_Value.Select(0, Psychrometrics_Elevation_Value.Text.Length);
+
+                    // Set the ErrorProvider error with the text to display. 
+                    this.errorProvider1.SetError(Psychrometrics_Elevation_Value, errorMessage);
+                }
+            }
+        }
+
+        private void Psychrometrics_DryBulbTemperature_Value_Validated(object sender, EventArgs e)
+        {
+            this.errorProvider1.SetError(Psychrometrics_DryBulbTemperature_Value, "");
+
+        }
+
+        private void Psychrometrics_DryBulbTemperature_Value_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            string errorMessage = string.Empty;
+
+            if (!PsychrometricsViewModel.DryBulbTemperatureDataValueUpdateValue(Psychrometrics_DryBulbTemperature_Value.Text, out errorMessage))
+            {
+                // Cancel the event and select the text to be corrected by the user.
+                e.Cancel = true;
+                Psychrometrics_DryBulbTemperature_Value.Select(0, Psychrometrics_DryBulbTemperature_Value.Text.Length);
+
+                // Set the ErrorProvider error with the text to display. 
+                this.errorProvider1.SetError(Psychrometrics_DryBulbTemperature_Value, errorMessage);
+            }
+        }
+
+        private void Psychrometrics_WetBulbTemperature_Value_Validated(object sender, EventArgs e)
+        {
+            this.errorProvider1.SetError(Psychrometrics_WetBulbTemperature_Value, "");
+
+        }
+
+        private void Psychrometrics_WetBulbTemperature_Value_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            string errorMessage = string.Empty;
+
+            if (!PsychrometricsViewModel.WetBulbTemperatureDataValueUpdateValue(Psychrometrics_WetBulbTemperature_Value.Text, out errorMessage))
+            {
+                // Cancel the event and select the text to be corrected by the user.
+                e.Cancel = true;
+                Psychrometrics_WetBulbTemperature_Value.Select(0, Psychrometrics_WetBulbTemperature_Value.Text.Length);
+
+                // Set the ErrorProvider error with the text to display. 
+                this.errorProvider1.SetError(Psychrometrics_WetBulbTemperature_Value, errorMessage);
+            }
         }
     }
 }

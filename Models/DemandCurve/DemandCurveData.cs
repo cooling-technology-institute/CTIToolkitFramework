@@ -1,5 +1,6 @@
 ﻿// Copyright Cooling Technology Institute 2019-2020
 
+using System.Collections.Generic;
 using System.Data;
 
 namespace Models
@@ -10,7 +11,7 @@ namespace Models
 
         public double CurveC1 { set; get; }
         public double CurveC2 { set; get; }
-        public double WaterAirRatio { set; get; } //L/G
+        public double LiquidToGasRatio { set; get; } //L/G
         public double Elevation { set; get; }
         public double BarometricPressure { set; get; }
         public double KaV_L { set; get; }
@@ -20,21 +21,19 @@ namespace Models
         public double Range { set; get; }
         public double Approach { set; get; }
 
-        public string UnitsTemperature { set; get; }
-        public string UnitsEnthalpy { set; get; }
-
-        //public Units Units { get; set; }
-        public bool IsDemo { get; set; }
         public bool IsInternationalSystemOfUnits_IS_ { get; set; }
         public bool IsElevation { get; set; } // attitude
         public bool IsCoef { get; set; } // coef
         public bool IsWaterAirRatio { get; set; } // lg
 
+        public List<SeriesData> SeriesData { get; set; }
 
-        //public DemandCurveData(bool isInternationalSystemOfUnits_IS_, bool isElevation, bool isDemo = false)
+        public double TargetApproach { get; set; }
+        public double UserApproach { get; set; }
+
+
         public DemandCurveData(bool isInternationalSystemOfUnits_IS_)
         {
-            IsDemo = false;
             IsInternationalSystemOfUnits_IS_ = isInternationalSystemOfUnits_IS_;
             IsElevation = true;
 
@@ -45,7 +44,7 @@ namespace Models
             CurveC1 = 0;
             CurveC2 = 0;
 //#endif
-            WaterAirRatio = 1.0;
+            LiquidToGasRatio = 1.0;
             BarometricPressure = 0.0;
             Elevation = 0;
             KaV_L = 0;
@@ -63,37 +62,6 @@ namespace Models
             }
 
             DataTable = new DataTable();
-
-            //SetUnits();
-        }
-
-        //private void SetUnits()
-        //{
-        //    if (IsInternationalSystemOfUnits_IS_)
-        //    {
-        //        Units = new UnitsSI();
-        //    }
-        //    else
-        //    {
-        //        Units = new UnitsIP();
-        //    }
-        //}
-
-        public void SetInternationalSystemOfUnits_IS_(bool value)
-        {
-            IsInternationalSystemOfUnits_IS_ = value;
-            //SetUnits();
-        }
-
-        public void SetElevation(bool value)
-        {
-            IsElevation = value;
-        }
-
-        public void SetDemo(bool value)
-        {
-            IsDemo = value;
-            //SetUnits();
         }
     }
 }

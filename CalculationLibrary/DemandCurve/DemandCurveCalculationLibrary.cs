@@ -20,13 +20,12 @@ namespace CalculationLibrary
         public List<bool> ApproachInRange { get; private set; }
         public List<bool> ApproachOutOfRange { get; private set; }
 
-        double TargetApproach { get; set; }
-        double UserApproach { get; set; }
-
-        public DataTable DemandCurveCalculation(DemandCurveData data)
+        public bool DemandCurveCalculation(bool isElevation, bool showUserApproach, DemandCurveData data, out string errorMessage)
         {
-            TargetApproach = 0;
-            UserApproach = 0;
+            errorMessage = string.Empty;
+
+            data.TargetApproach = 0;
+            data.UserApproach = 0;
 
             //ApproachXValues = new List<double>();
             ApproachInRange = new List<bool>();
@@ -66,7 +65,7 @@ namespace CalculationLibrary
             CalculateApproach(data);
             CalculateApproaches(data);
 
-            return data.DataTable;
+            return true;
         }
 
         void InitializeApproachList(DemandCurveData data)
@@ -76,7 +75,7 @@ namespace CalculationLibrary
                 WetBulbTemperature = data.WetBulbTemperature,
                 Range = data.Range,
                 Elevation = data.Elevation,
-                LiquidtoGasRatio = 0.1
+                LiquidToGasRatio = 0.1
             };
 
             foreach (double approachValue in InitialApproachXValues)
@@ -97,14 +96,14 @@ namespace CalculationLibrary
                 WetBulbTemperature = data.WetBulbTemperature,
                 Range = data.Range,
                 Elevation = data.Elevation,
-                LiquidtoGasRatio = data.WaterAirRatio
+                LiquidToGasRatio = data.LiquidToGasRatio
             };
 
-            if ((data.WaterAirRatio >= 0.1) && (data.WaterAirRatio <= 5.0))
+            if ((data.LiquidToGasRatio >= 0.1) && (data.LiquidToGasRatio <= 5.0))
             {
                 if (data.CurveC1 != 0.0 && data.CurveC2 != 0.0)
                 {
-                    data.KaV_L = Math.Round((data.CurveC1 * Math.Pow(data.WaterAirRatio, data.CurveC2)), 5, MidpointRounding.ToEven);
+                    data.KaV_L = Math.Round((data.CurveC1 * Math.Pow(data.LiquidToGasRatio, data.CurveC2)), 5, MidpointRounding.ToEven);
                     data.Approach = GetExactApproach(merkelData);
 
                     if ((data.KaV_L < .01) || (data.KaV_L > 5.0))
@@ -113,7 +112,7 @@ namespace CalculationLibrary
                         data.Approach = 0;
                     }
 
-                    if (TargetApproach >= 100)
+                    if (data.TargetApproach >= 100)
                     {
                         data.Approach = 0;
                     }
@@ -135,7 +134,7 @@ namespace CalculationLibrary
                 WetBulbTemperature = 80, // data.WetBulbTemperature,
                 Range = data.Range,
                 Elevation = data.Elevation,
-                LiquidtoGasRatio = data.WaterAirRatio
+                LiquidToGasRatio = data.LiquidToGasRatio
             };
 
             double kaVL = 0;
@@ -158,7 +157,7 @@ namespace CalculationLibrary
 
                     if (ApproachInRange[i] && !ApproachOutOfRange[i])
                     {
-                        merkelData.LiquidtoGasRatio = waterAirRatio;
+                        merkelData.LiquidToGasRatio = waterAirRatio;
                         merkelData.Approach = InitialApproachXValues[i];
                         if (data.IsInternationalSystemOfUnits_IS_)
                         {
@@ -188,7 +187,7 @@ namespace CalculationLibrary
                                 {
                                     merkelData.Approach *= 1.8;
                                 }
-                                merkelData.LiquidtoGasRatio = dInterp;
+                                merkelData.LiquidToGasRatio = dInterp;
                                 kaVL = CalculationLibrary.CalculateMerkel(merkelData);
                             }
                             calculatedWaterAirRatio = dInterp;

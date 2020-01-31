@@ -4,19 +4,192 @@ using CalculationLibrary;
 using Models;
 using System;
 using System.Data;
-using System.Windows.Forms;
 
 namespace ViewModels
 {
     public class PsychrometricsViewModel
     {
-        public PsychrometricsInputData PsychrometricsInputData { get; set; }
-        public PsychrometricsOutputData PsychrometricsOutputData { get; set; }
+        private PsychrometricsInputData PsychrometricsInputData { get; set; }
+        private PsychrometricsOutputData PsychrometricsOutputData { get; set; }
         private PsychrometricsData PsychrometricsData { get; set; }
         private PsychrometricsCalculationLibrary PsychrometricsCalculationLibrary { get; set; }
         private bool IsInternationalSystemOfUnits_IS_ { get; set; }
         private bool IsDemo { get; set; }
-        public PsychrometricsCalculationType CalculationType { get; set; }
+        public bool IsElevation { get; set; }
+
+        public string EnthalpyDataValueInputMessage
+        {
+            get
+            {
+                return PsychrometricsInputData.EnthalpyDataValue.InputMessage;
+            }
+        }
+
+        public string EnthalpyDataValueInputValue
+        {
+            get
+            {
+                return PsychrometricsInputData.EnthalpyDataValue.InputValue;
+            }
+        }
+
+        public bool EnthalpyDataValueUpdateValue(string value, out string errorMessage)
+        {
+            return PsychrometricsInputData.EnthalpyDataValue.UpdateValue(value, out errorMessage);
+        }
+
+        public string EnthalpyDataValueToolTip
+        {
+            get
+            {
+                return PsychrometricsInputData.EnthalpyDataValue.ToolTip;
+            }
+        }
+
+        public string ElevationDataValueInputMessage
+        {
+            get
+            {
+                return PsychrometricsInputData.ElevationDataValue.InputMessage;
+            }
+        }
+
+        public string ElevationDataValueInputValue
+        {
+            get
+            {
+                return PsychrometricsInputData.ElevationDataValue.InputValue;
+            }
+        }
+
+        public bool ElevationDataValueUpdateValue(string value, out string errorMessage)
+        {
+            return PsychrometricsInputData.ElevationDataValue.UpdateValue(value, out errorMessage);
+        }
+
+        public string ElevationDataValueToolTip
+        {
+            get
+            {
+                return PsychrometricsInputData.ElevationDataValue.ToolTip;
+            }
+        }
+
+        public string BarometricPressureDataValueInputMessage
+        {
+            get
+            {
+                return PsychrometricsInputData.BarometricPressureDataValue.InputMessage;
+            }
+        }
+
+        public string BarometricPressureDataValueInputValue
+        {
+            get
+            {
+                return PsychrometricsInputData.BarometricPressureDataValue.InputValue;
+            }
+        }
+
+        public bool BarometricPressureDataValueUpdateValue(string value, out string errorMessage)
+        {
+            return PsychrometricsInputData.BarometricPressureDataValue.UpdateValue(value, out errorMessage);
+        }
+
+        public string BarometricPressureDataValueToolTip
+        {
+            get
+            {
+                return PsychrometricsInputData.BarometricPressureDataValue.ToolTip;
+            }
+        }
+
+        public string RelativeHumidityDataValueInputMessage
+        {
+            get
+            {
+                return PsychrometricsInputData.RelativeHumidityDataValue.InputMessage;
+            }
+        }
+
+        public string RelativeHumidityDataValueInputValue
+        {
+            get
+            {
+                return PsychrometricsInputData.RelativeHumidityDataValue.InputValue;
+            }
+        }
+
+        public bool RelativeHumidityDataValueUpdateValue(string value, out string errorMessage)
+        {
+            return PsychrometricsInputData.RelativeHumidityDataValue.UpdateValue(value, out errorMessage);
+        }
+
+        public string RelativeHumidityDataValueToolTip
+        {
+            get
+            {
+                return PsychrometricsInputData.RelativeHumidityDataValue.ToolTip;
+            }
+        }
+        public string WetBulbTemperatureDataValueInputMessage
+        {
+            get
+            {
+                return PsychrometricsInputData.WetBulbTemperatureDataValue.InputMessage;
+            }
+        }
+
+        public string WetBulbTemperatureDataValueInputValue
+        {
+            get
+            {
+                return PsychrometricsInputData.WetBulbTemperatureDataValue.InputValue;
+            }
+        }
+
+        public bool WetBulbTemperatureDataValueUpdateValue(string value, out string errorMessage)
+        {
+            return PsychrometricsInputData.WetBulbTemperatureDataValue.UpdateValue(value, out errorMessage);
+        }
+
+        public string WetBulbTemperatureDataValueToolTip
+        {
+            get
+            {
+                return PsychrometricsInputData.WetBulbTemperatureDataValue.ToolTip;
+            }
+        }
+
+        public string DryBulbTemperatureDataValueInputMessage
+        {
+            get
+            {
+                return PsychrometricsInputData.DryBulbTemperatureDataValue.InputMessage;
+            }
+        }
+
+        public string DryBulbTemperatureDataValueInputValue
+        {
+            get
+            {
+                return PsychrometricsInputData.DryBulbTemperatureDataValue.InputValue;
+            }
+        }
+
+        public bool DryBulbTemperatureDataValueUpdateValue(string value, out string errorMessage)
+        {
+            return PsychrometricsInputData.DryBulbTemperatureDataValue.UpdateValue(value, out errorMessage);
+        }
+
+        public string DryBulbTemperatureDataValueToolTip
+        {
+            get
+            {
+                return PsychrometricsInputData.DryBulbTemperatureDataValue.ToolTip;
+            }
+        }
+
 
         public PsychrometricsViewModel(bool isDemo, bool isInternationalSystemOfUnits_IS_)
         {
@@ -38,152 +211,59 @@ namespace ViewModels
             return false;
         }
 
-        public string CalculatePsychrometrics()
+        public bool CalculatePsychrometrics(bool isElevation, out string errorMessage)
         {
             try
             {
-                PsychrometricsData = new PsychrometricsData();
-                PsychrometricsOutputData.ClearTable();
-
-                // transfer data from input data to PsychrometricsData
-                PsychrometricsInputData.FillData(PsychrometricsData);
-
-
-                //DataTable table = null;
-
-                //string message = string.Empty;
-
-                //if (PyschmetricsElevationRadio.Checked)
-                //{
-                //    if (!PsychrometricsInputData.ElevationDataValue.UpdateValue(Psychrometrics_Elevation_Value.Text, out message))
-                //    {
-                //        MessageBox.Show(message);
-                //        return;
-                //    }
-                //}
-                //else
-                //{
-                //    if (!PsychrometricsInputData.BarometricPressureDataValue.UpdateValue(Psychrometrics_Elevation_Value.Text, out message))
-                //    {
-                //        MessageBox.Show(message);
-                //        return;
-                //    }
-                //}
-
-                //if (Psychrometrics_DryBulbTemperature_RelativeHumidity.Checked)
-                //{
-                //    if (!PsychrometricsInputData.DryBulbTemperatureDataValue.UpdateValue(Psychrometrics_DBT_Value.Text, out message))
-                //    {
-                //        MessageBox.Show(message);
-                //        return;
-                //    }
-                //    if (!PsychrometricsInputData.RelativeHumitityDataValue.UpdateValue(Psychrometrics_WBT_Value.Text, out message))
-                //    {
-                //        MessageBox.Show(message);
-                //        return;
-                //    }
-                //}
-                //else if (Psychrometrics_Enthalpy.Checked)
-                //{
-                //    if (!PsychrometricsInputData.EnthalpyDataValue.UpdateValue(Psychrometrics_DBT_Value.Text, out message))
-                //    {
-                //        MessageBox.Show(message);
-                //        return;
-                //    }
-                //}
-                //else
-                //{
-                //    if (!PsychrometricsInputData.DryBulbTemperatureDataValue.UpdateValue(Psychrometrics_DBT_Value.Text, out message))
-                //    {
-                //        MessageBox.Show(message);
-                //        return;
-                //    }
-                //    if (!PsychrometricsInputData.WetBulbTemperatureDataValue.UpdateValue(Psychrometrics_WBT_Value.Text, out message))
-                //    {
-                //        MessageBox.Show(message);
-                //        return;
-                //    }
-                //    if (PsychrometricsInputData.DryBulbTemperatureDataValue.Current < PsychrometricsViewModel.PsychrometricsInputData.WetBulbTemperatureDataValue.Current)
-                //    {
-                //        MessageBox.Show("The Dry Bulb Temperature value must be greater than the Wet Bulb Temperature value");
-                //        return;
-                //    }
-                //}
-
-                //if (PyschmetricsElevationRadio.Checked)
-                //{
-                //    PsychrometricsData.Elevation = PsychrometricsViewModel.PsychrometricsInputData.ElevationDataValue.Current;
-                //}
-                //else
-                //{
-                //    PsychrometricsData.BarometricPressure = PsychrometricsViewModel.PsychrometricsInputData.BarometricPressureDataValue.Current;
-                //}
-
-                //PsychrometricsData.IsElevation = PyschmetricsElevationRadio.Checked;
-                //PsychrometricsData.SetInternationalSystemOfUnits_IS_(IsInternationalSystemOfUnits_IS_);
-
-                //if (Psychrometrics_WetBulbTemperature_DryBulbTemperature.Checked)
-                //{
-                //    PsychrometricsData.CalculationType = PsychrometricsCalculationType.Psychrometrics_WetBulbTemperature_DryBulbTemperature;
-                //    PsychrometricsViewModel.PsychrometricsInputData.CalculationType = PsychrometricsCalculationType.Psychrometrics_WetBulbTemperature_DryBulbTemperature;
-                //    PsychrometricsData.TemperatureDryBulb = PsychrometricsViewModel.PsychrometricsInputData.DryBulbTemperatureDataValue.Current;
-                //    PsychrometricsData.TemperatureWetBulb = PsychrometricsViewModel.PsychrometricsInputData.WetBulbTemperatureDataValue.Current;
-                //}
-                //else if (Psychrometrics_DryBulbTemperature_RelativeHumidity.Checked)
-                //{
-                //    PsychrometricsData.CalculationType = PsychrometricsCalculationType.Psychrometrics_DryBulbTemperature_RelativeHumidity;
-                //    PsychrometricsViewModel.PsychrometricsInputData.CalculationType = PsychrometricsCalculationType.Psychrometrics_DryBulbTemperature_RelativeHumidity;
-                //    PsychrometricsData.RelativeHumidity = PsychrometricsViewModel.PsychrometricsInputData.RelativeHumitityDataValue.Current;
-                //    PsychrometricsData.TemperatureDryBulb = PsychrometricsViewModel.PsychrometricsInputData.DryBulbTemperatureDataValue.Current;
-                //}
-                //else if (Psychrometrics_Enthalpy.Checked)
-                //{
-                //    PsychrometricsData.CalculationType = PsychrometricsCalculationType.Psychrometrics_Enthalpy;
-                //    PsychrometricsViewModel.PsychrometricsInputData.CalculationType = PsychrometricsCalculationType.Psychrometrics_Enthalpy;
-                //    PsychrometricsData.Enthalpy = PsychrometricsViewModel.PsychrometricsInputData.EnthalpyDataValue.Current;
-                //}
-
-                string errorMessage = PsychrometricsCalculationLibrary.PsychrometricsCalculation(PsychrometricsData);
-
-                if (string.IsNullOrEmpty(errorMessage))
+                if (!FillPsychrometricsData(isElevation, out errorMessage))
                 {
-                    //convert data to table
-                    PsychrometricsOutputData.FillTable(PsychrometricsData);
+                    return false;
                 }
-                return errorMessage;
+
+                if (!PsychrometricsCalculationLibrary.PsychrometricsCalculation(PsychrometricsData, out errorMessage))
+                {
+                    return false;
+                }
+
+                PsychrometricsOutputData.FillDataTable(PsychrometricsData);
+
+                return true;
             }
             catch (Exception exception)
             {
-                return string.Format("Error in Psychrometrics calculation. Please check your input values. Exception Message: {0}", exception.Message);
+                errorMessage = string.Format("Error in Psychrometrics calculation. Please check your input values. Exception Message: {0}", exception.Message);
+                return false;
             }
         }
-        
-        public string UpdateCalculationType(PsychrometricsCalculationType psychrometricsCalculationType)
+
+        public bool FillPsychrometricsData(bool isElevation, out string message)
         {
-            string errorMessage = string.Empty;
-            switch(psychrometricsCalculationType)
+            return PsychrometricsInputData.FillPsychrometricsData(PsychrometricsData, isElevation, out message);
+        }
+
+        public DataTable GetDataTable()
+        {
+            return PsychrometricsOutputData.NameValueUnitsDataTable.DataTable;
+        }
+
+        public bool UpdateCalculationType(PsychrometricsCalculationType psychrometricsCalculationType, out string errorMessage)
+        {
+            errorMessage = string.Empty;
+
+            switch (psychrometricsCalculationType)
             {
                 case PsychrometricsCalculationType.Psychrometrics_DryBulbTemperature_RelativeHumidity:
-                    if (!PsychrometricsInputData.DryBulbTemperatureDataValue.UpdateValue(Psychrometrics_DBT_Value.Text, out errorMessage))
-                    //    {
-                    //        MessageBox.Show(message);
-                    //        return;
-                    //    }
-                    if (!PsychrometricsInputData.RelativeHumitityDataValue.UpdateValue(Psychrometrics_WBT_Value.Text, out errorMessage))
-                    //    {
-                    //        MessageBox.Show(message);
-                    //        return;
-                    //    }
-                    break;
                 case PsychrometricsCalculationType.Psychrometrics_Enthalpy:
-
-                    break;
                 case PsychrometricsCalculationType.Psychrometrics_WetBulbTemperature_DryBulbTemperature:
+                    PsychrometricsInputData.CalculationType = psychrometricsCalculationType;
                     break;
 
+                default:
+                    errorMessage = "Invalid psychrometrics calculation type";
+                    return false;
             }
 
-            return errorMessage;
+            return true;
         }
     }
 }

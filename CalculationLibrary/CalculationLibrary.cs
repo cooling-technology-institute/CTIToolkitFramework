@@ -1477,7 +1477,7 @@ namespace CalculationLibrary
                 pressure = StandardAtmosphericPressure(merkelData.Elevation);
             }
             Hain = CalculateEnthalpy(pressure, merkelData.WetBulbTemperature, merkelData.WetBulbTemperature);
-            Haex = Hain + merkelData.Range * merkelData.LiquidtoGasRatio;
+            Haex = Hain + merkelData.Range * merkelData.LiquidToGasRatio;
             Tcold = merkelData.WetBulbTemperature + merkelData.Approach;
             Thot = Tcold + merkelData.Range;
             if (Thot >= Tboil)

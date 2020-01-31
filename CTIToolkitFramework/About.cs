@@ -18,9 +18,9 @@ namespace CTIToolkit
         {
             InitializeComponent();
 
-            this.Text = string.Format("About {0}", AssemblyInformation.Title);
-            this.copyright.Text = string.Format("{0} {1}. All rights reserved.", AssemblyInformation.Copyright, AssemblyInformation.Company);
-            this.versionNumber.Text = AssemblyInformation.AssemblyVersion;
+            //this.Text = string.Format("About {0}", AssemblyInformation.Title);
+            //this.copyright.Text = string.Format("{0} {1}. All rights reserved.", AssemblyInformation.Copyright, AssemblyInformation.Company);
+            //this.versionNumber.Text = AssemblyInformation.AssemblyVersion;
 
             setSerialNumber();
         }
@@ -33,36 +33,36 @@ namespace CTIToolkit
             }
             else
             {
-                if(AssemblyInformation.TestSerialNumber(setSerialNumberInput.Text))
-                {
-                    AssemblyInformation.SerialNumber = setSerialNumberInput.Text;
-                }
-                else
-                {
-                    MessageBox.Show("You must enter an invalid serial number.");
-                }
+                //if(AssemblyInformation.TestSerialNumber(setSerialNumberInput.Text))
+                //{
+                //    AssemblyInformation.SerialNumber = setSerialNumberInput.Text;
+                //}
+                //else
+                //{
+                //    MessageBox.Show("You must enter an invalid serial number.");
+                //}
             }
             setSerialNumber();
         }
 
         private void setSerialNumber()
         {
-            this.serialNumber.Text = AssemblyInformation.SerialNumber;
+            //this.serialNumber.Text = AssemblyInformation.SerialNumber;
 
-            if (this.serialNumber.Text == AssemblyInformation.Demo)
-            {
-                this.demoWarning.Visible = true;
-                this.setSerialNumberInput.Visible = true;
-                this.setSerialNumberButton.Visible = true;
-                this.setSerialNumberInputLabel.Visible = true;
-            }
-            else
-            {
-                this.demoWarning.Visible = false;
-                this.setSerialNumberInput.Visible = false;
-                this.setSerialNumberButton.Visible = false;
-                this.setSerialNumberInputLabel.Visible = false;
-            }
+            //if (this.serialNumber.Text == AssemblyInformation.Demo)
+            //{
+            //    this.demoWarning.Visible = true;
+            //    this.setSerialNumberInput.Visible = true;
+            //    this.setSerialNumberButton.Visible = true;
+            //    this.setSerialNumberInputLabel.Visible = true;
+            //}
+            //else
+            //{
+            //    this.demoWarning.Visible = false;
+            //    this.setSerialNumberInput.Visible = false;
+            //    this.setSerialNumberButton.Visible = false;
+            //    this.setSerialNumberInputLabel.Visible = false;
+            //}
         }
 
         private void ctiLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

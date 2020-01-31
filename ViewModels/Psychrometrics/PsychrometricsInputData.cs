@@ -14,7 +14,7 @@ namespace ViewModels
         public EnthalpyDataValue EnthalpyDataValue { get; set; }
         public ElevationDataValue ElevationDataValue { get; set; }
         public BarometricPressureDataValue BarometricPressureDataValue { get; set; }
-        public RelativeHumitityDataValue RelativeHumidityDataValue { get; set; }
+        public RelativeHumidityDataValue RelativeHumidityDataValue { get; set; }
         public WetBulbTemperatureDataValue WetBulbTemperatureDataValue { get; set; }
         public DryBulbTemperatureDataValue DryBulbTemperatureDataValue { get; set; }
 
@@ -27,13 +27,15 @@ namespace ViewModels
             EnthalpyDataValue = new EnthalpyDataValue(IsDemo, IsInternationalSystemOfUnits_IS_);
             ElevationDataValue = new ElevationDataValue(IsDemo, IsInternationalSystemOfUnits_IS_);
             BarometricPressureDataValue = new BarometricPressureDataValue(IsDemo, IsInternationalSystemOfUnits_IS_);
-            RelativeHumidityDataValue = new RelativeHumitityDataValue(IsDemo, IsInternationalSystemOfUnits_IS_);
+            RelativeHumidityDataValue = new RelativeHumidityDataValue(IsDemo, IsInternationalSystemOfUnits_IS_);
             WetBulbTemperatureDataValue = new WetBulbTemperatureDataValue(IsDemo, IsInternationalSystemOfUnits_IS_);
             DryBulbTemperatureDataValue = new DryBulbTemperatureDataValue(IsDemo, IsInternationalSystemOfUnits_IS_);
         }
 
-        public void FillData(PsychrometricsData data)
+        public bool FillPsychrometricsData(PsychrometricsData data, bool isElevation, out string errorMessage)
         {
+            errorMessage = string.Empty;
+
             data.IsElevation = IsElevation;
             data.IsInternationalSystemOfUnits_IS_ = IsInternationalSystemOfUnits_IS_;
             data.BarometricPressure = BarometricPressureDataValue.Current;
@@ -42,6 +44,8 @@ namespace ViewModels
             data.RelativeHumidity = RelativeHumidityDataValue.Current;
             data.WetBulbTemperature = WetBulbTemperatureDataValue.Current;
             data.DryBulbTemperature = DryBulbTemperatureDataValue.Current;
+            
+            return true;
         }
 
         public bool ConvertValues(bool isInternationalSystemOfUnits_IS_)
